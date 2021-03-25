@@ -8,14 +8,16 @@ html {
 
 h1 {
     font-family: serif;
-    color: rgb(224, 221, 0);
+    color: #d7def0;
     display: flex;
     justify-content: center;
+    background-color: #333333;
 }
 
-nav {
+.menu {
     display: flex;
     justify-content: center;
+    background-color: #333333;
 }
 
 ul {
@@ -53,5 +55,148 @@ li a:hover {
     background-color: yellowgreen;
     color: white;
 }
+
+.board {
+    display: flex;
+    flex-wrap: wrap;
+    width: 800px;
+    height: 820px;
+    border-radius: 1em;
+    margin: 5px auto;
+    border: red solid;
+    background-color: white;
+}
+
+.boardTiles {
+    width: 50px;
+    height: 50px;
+    background-color: #d7def0;
+    border-radius: 1em;
+    margin: 2px 0.1em;
+}
+
+.specialTileRed {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 0, 0, 0.795);
+    border-radius: 1em;
+    margin: 2px 0.1em;
+}
+
+.specialTileCyan {
+    width: 50px;
+    height: 50px;
+    background-color: cyan;
+    border-radius: 1em;
+    margin: 2px 0.1em;
+}
+
+.specialTileBlue {
+    width: 50px;
+    height: 50px;
+    background-color: blue;
+    border-radius: 1em;
+    margin: 2px 0.1em; 
+}
+
+.specialTilePink {
+    width: 50px;
+    height: 50px;
+    background-color: lightpink;
+    border-radius: 1em;
+    margin: 2px 0.1em;
+}
+
+.specialTileStart {
+    width: 50px;
+    height: 50px;
+    background-color: black;
+    border-radius: 1em;
+    margin: 2px 0.1em;
+}
+
+.design {
+    display: flex;
+}
+
+.rackTiles {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: #f0d97e;
+    border-radius: 1em;
+    margin: 2px 0.1em;
+    
+}
+
+.tileRack {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-width: 380px;
+    height: 60px;
+    border-radius: 1em;
+    margin: 10px 50px 20px 540px;
+    border: greenyellow solid;
+    background-color: white;
+}
+
+.submit {
+    border: greenyellow solid;
+    /* line-height: 2.5; */
+    /* padding: 5px 50px; */
+    height: 4em;
+    width: 10em;
+    font-size: 1em;
+    text-align: center;
+    color: white;
+    font-family: serif;
+    font-size: 1em;
+    font-style: italic;
+    transition: background-color 0.3s ease;
+    /* text-shadow: 1px 1px 1px #000; */
+    border-radius: 1em;
+    margin: 10px;
+
+    background-color: #333333;
+    background-image: linear-gradient(to top left,
+                                      rgba(0, 0, 0, .2),
+                                      rgba(0, 0, 0, .2) 30%,
+                                      rgba(0, 0, 0, 0));
+    box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
+                inset -2px -2px 3px rgba(0, 0, 0, .6);
+
+}
+
+.submit:hover {
+    background-color: rgb(123, 124, 123);
+    
+}
+
+.submit:active {
+    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
+                inset 2px 2px 3px rgba(0, 0, 0, .6);
+}
+
+#score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: greenyellow solid ;
+    height: 2em;
+    width: 10em;
+    font-size: 1em;
+    text-align: center;
+    color: white;
+    font-family: serif;
+    font-size: 1em;
+    font-style: italic;
+    border-radius: 1em;
+    margin: 20px;
+    background-color: #333333;
+}
+
 
 
