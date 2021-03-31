@@ -1,3 +1,5 @@
+import { lastID, xCoord, yCoord, boolTileRack } from './dragHandler.mjs';
+
 export function randomLetters() {
     const letterTiles = document.querySelectorAll('.letterTile');
     
@@ -12,7 +14,6 @@ export function randomLetters() {
 }
 
 function letterScores() {
-
     // Can make it efficient
     const scores = {
         A: 1, E: 1, I: 1, O: 1, U: 1, L: 1, N: 1, S: 1, T: 1, R: 1,
@@ -41,20 +42,77 @@ export function tileRackLetters() {
     }
 }
 
+function clearP() {
+    let p = document.querySelector('.warning');
+    p.parentNode.removeChild(p);
+}
+
 export function wordsRecognition() {
     const starSquarePink = document.querySelector('.starSquarePink');
     const infoBoard = document.querySelector('.infoBoard')
     const p = document.createElement('p');
 
+    // let number = 8;
+
+    // let discoverLetter = document.querySelectorAll(`[data-y="${number}"]`);
+    // console.log(discoverLetter);
+    // console.log(discoverLetter[1].textContent);
+   
     if (!starSquarePink.hasChildNodes()) {
         p.className = 'warning';
         p.textContent = "First letter tile must be placed in the middle square.";
         infoBoard.append(p);
+        window.setTimeout(clearP, 4000);
     }
+
+    let wordsArr = [];
+
+    const initialLetter = document.getElementById(lastID);
+    wordsArr.push(initialLetter.textContent);
+
+    let xRight = 14-xCoord;
+    let xLeft = 14-xRight;
+    console.log(xLeft, xRight);
+
+    let takeAway = xLeft;
+
+    for (let i=0; i<xLeft; i++) {
+        takeAway -=1;
+        console.log(takeAway);
+        let findLetter = document.querySelectorAll(`[data-y="${yCoord}"]`);
+        let identifyLetter = findLetter[takeAway].textContent;
+        console.log(identifyLetter);
+        if (identifyLetter === "") {
+            console.log("Single letter or another word!");
+            break;
+        } else if (boolTileRack === true) {
+            break;
+        } else {
+            wordsArr.push(identifyLetter);  
+            console.log(wordsArr);          
+        }
+    }
+    console.log(wordsArr);
 }
+
+export function popMoved() {
+    
+}
+
+// export class wordsRecognition2 {
+//     constructor(lastID, xCoord, yCoord) {
+//         this.xCoord = xCoord;
+//         this.yCoord = yCoord;
+//         this.lastID = lastID
+//     }
+//     show() {
+//         let x = this.xCoord;
+//         let y = this.yCoord;
+//         console.log(x, y);
+//     }
+// }
 
 export function singlePlayer() {
     randomLetters();
-    tileRackLetters();
-    wordsRecognition();
+    //tileRackLetters();
 }

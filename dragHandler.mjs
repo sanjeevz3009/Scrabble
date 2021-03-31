@@ -1,4 +1,5 @@
 import { wordsRecognition } from './singlePlayer.mjs';
+// import { wordsRecognition2 } from './singlePlayer.mjs';
 
 function dragStartHandler(e) {
     const data = e.target.id;
@@ -7,16 +8,46 @@ function dragStartHandler(e) {
 
 function dragOverHandler(e) {e.preventDefault();}
 
+let letterTileTracker = [];
+console.log("letterTileTracker", letterTileTracker);
+
+export let lastID = 0;
+export let xCoord = 0;
+export let yCoord = 0;
+export let boolTileRack = false;
+
 function dropHandler(e) {
     const data = e.dataTransfer.getData('text/plain');
     const dragged = document.getElementById(data);
 
+    const squareClassName = ["boardSquareGrey", "specialSquareRed", "specialSquareCyan", "specialSquareBlue", "specialSquarePink", "starSquarePink"];
+    const bool = squareClassName.includes(e.currentTarget.className);
+
+    const letterTileID = dragged.id;
+    if (bool === true ) {
+        letterTileTracker.push(letterTileID);
+    }
+
     if (e.currentTarget.className === "tileRack") {
         dragged.style.margin = "2px 0.1em";
+        e.currentTarget.append(dragged);
+        boolTileRack = true;
+        console.log(boolTileRack);
     } else {
         dragged.style.margin = 0;
+        e.currentTarget.append(dragged);
+        boolTileRack = false;
+        console.log(boolTileRack);
     }
-    e.currentTarget.append(dragged);
+
+    if (bool === true) {
+        lastID = letterTileTracker[letterTileTracker.length-1];
+
+        const id = document.getElementById(lastID).parentNode;
+        xCoord = id.dataset.x;
+        yCoord = id.dataset.y;
+    } 
+    console.log("letterTileTracker", letterTileTracker);
 }
 
 export function boardTileHandler() {
@@ -42,7 +73,7 @@ export function dragStart() {
     }
 }
 
-export function handleSubmitClick() {
+export function handleSubmitClick(xCoord, yCoord) {
     const submit = document.querySelector('.submit');
     submit.addEventListener('click', wordsRecognition);
 }

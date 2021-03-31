@@ -30,49 +30,49 @@ export function drawSquares() {
 
         if (x>0) {
             tracker += 1;
-            yCoord += 1;
+            xCoord += 1;
         }
 
-        if (tracker===15) {
-            xCoord += 1;
+        if (tracker === 15) {
+            yCoord += 1;
             tracker = 0;
-            yCoord = 0;
+            xCoord = 0;
         }
 
         if (boardList[x] === '3ws') {
             square.className = 'specialSquareRed';
-            square.setAttribute("x", xCoord);
-            square.setAttribute("y", yCoord);
+            square.dataset.x = xCoord;
+            square.dataset.y = yCoord;
 
             scrabbleBoard.append(square);
         } else if (boardList[x] === '2ls') {
             square.className = 'specialSquareCyan';
-            square.setAttribute("x", xCoord);
-            square.setAttribute("y", yCoord);
+            square.dataset.x = xCoord;
+            square.dataset.y = yCoord;
 
             scrabbleBoard.append(square);
         } else if (boardList[x] === '3ls') {
             square.className = 'specialSquareBlue';
-            square.setAttribute("x", xCoord);
-            square.setAttribute("y", yCoord);
+            square.dataset.x = xCoord;
+            square.dataset.y = yCoord;
 
             scrabbleBoard.append(square);
         } else if (boardList[x] === '2ws') {
             square.className = 'specialSquarePink';
-            square.setAttribute("x", xCoord);
-            square.setAttribute("y", yCoord);
+            square.dataset.x = xCoord;
+            square.dataset.y = yCoord;
 
             scrabbleBoard.append(square);
         } else if (boardList[x] === '') {
             square.className = 'boardSquareGrey';
-            square.setAttribute("x", xCoord);
-            square.setAttribute("y", yCoord);
+            square.dataset.x = xCoord;
+            square.dataset.y = yCoord;
 
             scrabbleBoard.append(square);
         } else {
             square.className = 'starSquarePink';
-            square.setAttribute("x", xCoord);
-            square.setAttribute("y", yCoord);
+            square.dataset.x = xCoord;
+            square.dataset.y = yCoord;
 
             scrabbleBoard.append(square);
         }
@@ -93,5 +93,5 @@ export function tileRack() {
 
 export function drawBoards() {
     drawSquares();
-    tileRack();
+    //tileRack();
 }

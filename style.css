@@ -123,16 +123,31 @@ li a:hover {
     min-width: 400px;
     height: 400px;
     border-radius: 1em;
-    margin: 10px 10px 20px 10px;
     border: greenyellow solid;
+    margin: 10px 10px 20px 10px;
     background-color: white;
 }
 
 .warning {
     display: flex;
     justify-content: center;
+    /* border-radius: 1em; */
+    border: black solid;
     font-family: serif;
-    color: #000000;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #c90000;
+    animation: pulse 4s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        background-color: red;
+    }
+    100% {
+        background-color: yellowgreen;
+        color: black;
+    }
 }
 
 .lowerDesign {
@@ -175,7 +190,7 @@ li a:hover {
     transition: background-color 0.3s ease;
     /* text-shadow: 1px 1px 1px #000; */
     border-radius: 1em;
-    margin: 5px;
+    margin: 5px 205px;
 
     color: white;
     border: greenyellow solid;
@@ -205,17 +220,16 @@ li a:hover {
     justify-content: center;
     height: 2em;
     width: 10em;
-    font-size: 1em;
-    text-align: center;
     font-family: serif;
     font-size: 1em;
     font-style: italic;
     border-radius: 1em;
-    margin: 20px;
+    margin: 5px auto;
     color: white;
     border: greenyellow solid ;
     background-color: #333333;
 }
+
 
 
 
