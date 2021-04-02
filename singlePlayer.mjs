@@ -121,6 +121,7 @@ export function wordsRecognition() {
     //     }
     // }
     // console.log(wordsArr);
+    console.log("Test");
 }
 
 export function popMoved() {
