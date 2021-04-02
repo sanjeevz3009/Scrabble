@@ -47,6 +47,8 @@ function clearP() {
     p.parentNode.removeChild(p);
 }
 
+let wordsArr = [];
+
 export function wordsRecognition() {
     const starSquarePink = document.querySelector('.starSquarePink');
     const infoBoard = document.querySelector('.infoBoard')
@@ -65,36 +67,39 @@ export function wordsRecognition() {
         window.setTimeout(clearP, 4000);
     }
 
-    let lettersArrHorz = [];
+    console.log(xCoord, yCoord);
+
+    // let lettersArrHorz = [];
     
-    let wordsArrHorz = [];
+    // let wordsArrHorz = [];
 
-    const boardSquares = document.querySelectorAll('div.boardSquareGrey, div.specialSquareRed, div.specialSquareCyan, div.specialSquareBlue, div.specialSquarePink, div.starSquarePink');
-    for (let i=0;  i<boardSquares.length; i++) {
-        console.log(boardSquares[i].textContent);
-        if (boardSquares[i].textContent === "") {
-            lettersArrHorz.push("");
-        } else {
-            lettersArrHorz.push(boardSquares[i].textContent);
-        }
-    }
-    console.log(lettersArrHorz);
+    // const boardSquares = document.querySelectorAll('div.boardSquareGrey, div.specialSquareRed, div.specialSquareCyan, div.specialSquareBlue, div.specialSquarePink, div.starSquarePink');
+    // for (let i=0;  i<boardSquares.length; i++) {
+    //     console.log(boardSquares[i].textContent);
+    //     if (boardSquares[i].textContent === "") {
+    //         lettersArrHorz.push("");
+    //     } else {
+    //         lettersArrHorz.push(boardSquares[i].textContent);
+    //     }
+    // }
+    // console.log(lettersArrHorz);
 
-    let tempWordArrHorz = [];
+    // let tempWordArrHorz = [];
 
-    for (let i=0; i<lettersArrHorz.length; i++) {
-        if (lettersArrHorz[i].length >= 1) {
-            tempWordArrHorz.push(lettersArrHorz[i]);
-        } else if (lettersArrHorz[i].length <=0) {
-            wordsArrHorz.push(tempWordArrHorz.join(''));
-            tempWordArrHorz = [];
+    // for (let i=0; i<lettersArrHorz.length; i++) {
+    //     if (lettersArrHorz[i].length >= 1) {
+    //         tempWordArrHorz.push(lettersArrHorz[i]);
+    //     } else if (lettersArrHorz[i].length <=0) {
+    //         wordsArrHorz.push(tempWordArrHorz.join(''));
+    //         tempWordArrHorz = [];
 
-        }
-    }
+    //     }
+    // }
 
-    console.log(tempWordArrHorz);
-    wordsArrHorz = wordsArrHorz.filter(item => item);
-    console.log(wordsArrHorz);
+    // console.log(tempWordArrHorz);
+    // wordsArrHorz = wordsArrHorz.filter(item => item);
+    // console.log(wordsArrHorz);
+
     // const initialLetter = document.getElementById(lastID);
     // wordsArr.push(initialLetter.textContent);
 
@@ -121,7 +126,6 @@ export function wordsRecognition() {
     //     }
     // }
     // console.log(wordsArr);
-    console.log("Test");
 }
 
 export function popMoved() {
