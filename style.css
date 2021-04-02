@@ -58,6 +58,7 @@ li a:hover {
 .scrabbleBoard {
     display: flex;
     flex-wrap: wrap;
+    overflow: hidden;
     width: 800px;
     height: 820px;
     border-radius: 1em;
@@ -116,6 +117,7 @@ li a:hover {
 
 .boards {
     display: flex;
+    align-items: center;
 }
 
 .infoBoard {
@@ -132,7 +134,7 @@ li a:hover {
     display: flex;
     justify-content: center;
     /* border-radius: 1em; */
-    border: black solid;
+    /* border: black solid; */
     font-family: serif;
     font-size: 14px;
     color: #ffffff;

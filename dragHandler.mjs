@@ -9,7 +9,6 @@ function dragStartHandler(e) {
 function dragOverHandler(e) {e.preventDefault();}
 
 let letterTileTracker = [];
-console.log("letterTileTracker", letterTileTracker);
 
 export let lastID = 0;
 export let xCoord = 0;
@@ -32,12 +31,10 @@ function dropHandler(e) {
         dragged.style.margin = "2px 0.1em";
         e.currentTarget.append(dragged);
         boolTileRack = true;
-        console.log(boolTileRack);
     } else {
         dragged.style.margin = 0;
         e.currentTarget.append(dragged);
         boolTileRack = false;
-        console.log(boolTileRack);
     }
 
     if (bool === true) {

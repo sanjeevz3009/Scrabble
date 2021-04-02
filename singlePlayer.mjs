@@ -65,34 +65,62 @@ export function wordsRecognition() {
         window.setTimeout(clearP, 4000);
     }
 
-    let wordsArr = [];
+    let lettersArrHorz = [];
+    
+    let wordsArrHorz = [];
 
-    const initialLetter = document.getElementById(lastID);
-    wordsArr.push(initialLetter.textContent);
-
-    let xRight = 14-xCoord;
-    let xLeft = 14-xRight;
-    console.log(xLeft, xRight);
-
-    let takeAway = xLeft;
-
-    for (let i=0; i<xLeft; i++) {
-        takeAway -=1;
-        console.log(takeAway);
-        let findLetter = document.querySelectorAll(`[data-y="${yCoord}"]`);
-        let identifyLetter = findLetter[takeAway].textContent;
-        console.log(identifyLetter);
-        if (identifyLetter === "") {
-            console.log("Single letter or another word!");
-            break;
-        } else if (boolTileRack === true) {
-            break;
+    const boardSquares = document.querySelectorAll('div.boardSquareGrey, div.specialSquareRed, div.specialSquareCyan, div.specialSquareBlue, div.specialSquarePink, div.starSquarePink');
+    for (let i=0;  i<boardSquares.length; i++) {
+        console.log(boardSquares[i].textContent);
+        if (boardSquares[i].textContent === "") {
+            lettersArrHorz.push("");
         } else {
-            wordsArr.push(identifyLetter);  
-            console.log(wordsArr);          
+            lettersArrHorz.push(boardSquares[i].textContent);
         }
     }
-    console.log(wordsArr);
+    console.log(lettersArrHorz);
+
+    let tempWordArrHorz = [];
+
+    for (let i=0; i<lettersArrHorz.length; i++) {
+        if (lettersArrHorz[i].length >= 1) {
+            tempWordArrHorz.push(lettersArrHorz[i]);
+        } else if (lettersArrHorz[i].length <=0) {
+            wordsArrHorz.push(tempWordArrHorz.join(''));
+            tempWordArrHorz = [];
+
+        }
+    }
+
+    console.log(tempWordArrHorz);
+    wordsArrHorz = wordsArrHorz.filter(item => item);
+    console.log(wordsArrHorz);
+    // const initialLetter = document.getElementById(lastID);
+    // wordsArr.push(initialLetter.textContent);
+
+    // let xRight = 14-xCoord;
+    // let xLeft = 14-xRight;
+    // console.log(xLeft, xRight);
+
+    // let takeAway = xLeft;
+
+    // for (let i=0; i<xLeft; i++) {
+    //     takeAway -=1;
+    //     console.log(takeAway);
+    //     let findLetter = document.querySelectorAll(`[data-y="${yCoord}"]`);
+    //     let identifyLetter = findLetter[takeAway].textContent;
+    //     console.log(identifyLetter);
+    //     if (identifyLetter === "") {
+    //         console.log("Single letter or another word!");
+    //         break;
+    //     } else if (boolTileRack === true) {
+    //         break;
+    //     } else {
+    //         wordsArr.push(identifyLetter);  
+    //         console.log(wordsArr);          
+    //     }
+    // }
+    // console.log(wordsArr);
 }
 
 export function popMoved() {
