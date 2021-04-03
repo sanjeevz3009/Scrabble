@@ -1,5 +1,3 @@
-import { lastID, xCoord, yCoord, boolTileRack } from './dragHandler.mjs';
-
 export function randomLetters() {
     const letterTiles = document.querySelectorAll('.letterTile');
     
@@ -51,12 +49,6 @@ export function wordsRecognition() {
     const starSquarePink = document.querySelector('.starSquarePink');
     const infoBoard = document.querySelector('.infoBoard')
     const p = document.createElement('p');
-
-    // let number = 8;
-
-    // let discoverLetter = document.querySelectorAll(`[data-y="${number}"]`);
-    // console.log(discoverLetter);
-    // console.log(discoverLetter[1].textContent);
    
     if (!starSquarePink.hasChildNodes()) {
         p.className = 'warning';
@@ -65,80 +57,87 @@ export function wordsRecognition() {
         window.setTimeout(clearP, 4000);
     }
 
-    let lettersArrHorz = [];
-    
-    let wordsArrHorz = [];
-
     const boardSquares = document.querySelectorAll('div.boardSquareGrey, div.specialSquareRed, div.specialSquareCyan, div.specialSquareBlue, div.specialSquarePink, div.starSquarePink');
-    for (let i=0;  i<boardSquares.length; i++) {
-        console.log(boardSquares[i].textContent);
-        if (boardSquares[i].textContent === "") {
-            lettersArrHorz.push("");
-        } else {
-            lettersArrHorz.push(boardSquares[i].textContent);
-        }
-    }
-    console.log(lettersArrHorz);
-
-    let tempWordArrHorz = [];
-
-    for (let i=0; i<lettersArrHorz.length; i++) {
-        if (lettersArrHorz[i].length >= 1) {
-            tempWordArrHorz.push(lettersArrHorz[i]);
-        } else if (lettersArrHorz[i].length <=0) {
-            wordsArrHorz.push(tempWordArrHorz.join(''));
-            tempWordArrHorz = [];
-
-        }
-    }
-
-    console.log(tempWordArrHorz);
-    wordsArrHorz = wordsArrHorz.filter(item => item);
-    console.log(wordsArrHorz);
-    // const initialLetter = document.getElementById(lastID);
-    // wordsArr.push(initialLetter.textContent);
-
-    // let xRight = 14-xCoord;
-    // let xLeft = 14-xRight;
-    // console.log(xLeft, xRight);
-
-    // let takeAway = xLeft;
-
-    // for (let i=0; i<xLeft; i++) {
-    //     takeAway -=1;
-    //     console.log(takeAway);
-    //     let findLetter = document.querySelectorAll(`[data-y="${yCoord}"]`);
-    //     let identifyLetter = findLetter[takeAway].textContent;
-    //     console.log(identifyLetter);
-    //     if (identifyLetter === "") {
-    //         console.log("Single letter or another word!");
-    //         break;
-    //     } else if (boolTileRack === true) {
-    //         break;
-    //     } else {
-    //         wordsArr.push(identifyLetter);  
-    //         console.log(wordsArr);          
-    //     }
-    // }
-    // console.log(wordsArr);
-}
-
-export function popMoved() {
     
+    let counter = 0;
+    let results = [];
+    let tempLetterArr = [];
+
+    for (let i=0; i<boardSquares.length; i++) {
+        if (counter === 14) {
+            tempLetterArr.push(boardSquares[i].textContent);
+            results.push(tempLetterArr);
+            tempLetterArr = [];
+            counter = 0;
+        } else {
+            tempLetterArr.push(boardSquares[i].textContent);
+            counter += 1;
+        }
+    }
+
+    let wordsArr = [];
+    let tempWordArr = [];
+
+    for (let i=0; i<results.length; i++) {
+        tempWordArr = [];
+        for (let x=0; x<results[i].length; x++) {
+            if (results[i][x] != "") {
+                tempWordArr.push(results[i][x]);
+            } else {
+                wordsArr.push(tempWordArr.join(''));
+                tempWordArr = [];
+            }
+        }
+        wordsArr.push(tempWordArr.join(''));
+    }
+
+    let newWordsArr = [];
+    for (let i=0; i<wordsArr.length; i++) {
+        if (wordsArr[i].length > 1) {
+            newWordsArr.push(wordsArr[i]);
+        }
+    }
+    console.log(newWordsArr);
+
+    let wordsArrVer = [];
+    let tempWordArrVer = [];
+
+    for (let i=0; i<results.length; i++) {
+        tempWordArrVer = [];
+        for (let x=0; x<results.length; x++) {
+            if (results[x][i] != "") {
+                tempWordArrVer.push(results[x][i]);
+            } else {
+                wordsArrVer.push(tempWordArrVer.join(''));
+                tempWordArrVer = [];
+            }
+        }
+        wordsArrVer.push(tempWordArrVer.join(''));
+    }
+    wordsArrVer = wordsArrVer.filter(item => item);
+
+    let newWordsArrVer = [];
+
+    for (let i=0; i<wordsArrVer.length; i++) {
+        if (wordsArrVer[i].length > 1) {
+            newWordsArrVer.push(wordsArrVer[i]);
+        }
+    }
+    console.log(newWordsArrVer);
 }
 
-// export class wordsRecognition2 {
-//     constructor(lastID, xCoord, yCoord) {
-//         this.xCoord = xCoord;
-//         this.yCoord = yCoord;
-//         this.lastID = lastID
-//     }
-//     show() {
-//         let x = this.xCoord;
-//         let y = this.yCoord;
-//         console.log(x, y);
-//     }
-// }
+function compare() {
+    let diff = 0;
+    if (newWordsArr.length > oldWordsArr.length) {
+        newWordsArr.reverse()
+        diff = newWordsArr.length - oldWordsArr.length;
+        for (let i=0; i<diff; i++) {
+            console.log(newWordsArr[i]);
+        } 
+    } else {
+        console.log("It will never get here!")
+    }
+} 
 
 export function singlePlayer() {
     randomLetters();

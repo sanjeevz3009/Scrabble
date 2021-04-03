@@ -1,5 +1,4 @@
 import { wordsRecognition } from './singlePlayer.mjs';
-// import { wordsRecognition2 } from './singlePlayer.mjs';
 
 function dragStartHandler(e) {
     const data = e.target.id;
@@ -44,7 +43,6 @@ function dropHandler(e) {
         xCoord = id.dataset.x;
         yCoord = id.dataset.y;
     } 
-    console.log("letterTileTracker", letterTileTracker);
 }
 
 export function boardTileHandler() {
