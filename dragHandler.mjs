@@ -1,18 +1,35 @@
 import { wordsRecognition } from './singlePlayer.mjs';
 
+function dragStart() {
+    const letterTiles = document.querySelectorAll('.letterTile');
+    for (const letterTile of letterTiles) {
+        letterTile.addEventListener('dragstart', dragStartHandler);
+    }
+}
+
 function dragStartHandler(e) {
     const data = e.target.id;
     e.dataTransfer.setData('text/plain', data);
 }
 
-function dragOverHandler(e) {e.preventDefault();}
+function dragOverHandler(e) {
+    e.preventDefault();
+}
 
-let letterTileTracker = [];
+function dragEnter() {
+    this.style.backgroundColor = "greenyellow";
+}
 
-export let lastID = 0;
-export let xCoord = 0;
-export let yCoord = 0;
-export let boolTileRack = false;
+function dragLeave() {
+    this.style.backgroundColor = "";
+
+}
+
+export let letterTileTracker = [];
+
+export function clearLetterTileTracker() {
+    letterTileTracker = [];
+}
 
 function dropHandler(e) {
     const data = e.dataTransfer.getData('text/plain');
@@ -22,34 +39,35 @@ function dropHandler(e) {
     const bool = squareClassName.includes(e.currentTarget.className);
 
     const letterTileID = dragged.id;
-    if (bool === true ) {
-        letterTileTracker.push(letterTileID);
-    }
 
     if (e.currentTarget.className === "tileRack") {
         dragged.style.margin = "2px 0.1em";
         e.currentTarget.append(dragged);
-        boolTileRack = true;
+        // console.log(dragged.id);
+        if (letterTileTracker.includes(dragged.id)) {
+            const indexPos = letterTileTracker.indexOf(dragged.id);
+            letterTileTracker.splice(indexPos, 1);
+            // console.log(letterTileTracker);
+        }
     } else {
-        dragged.style.margin = 0;
-        e.currentTarget.append(dragged);
-        boolTileRack = false;
+        if (!e.currentTarget.children.length > 0) {
+            dragged.style.margin = 0;
+            e.currentTarget.textContent = "";
+            e.currentTarget.append(dragged);
+            letterTileTracker.push(letterTileID);
+            const uniqueSet = new Set(letterTileTracker);
+            letterTileTracker = [...uniqueSet];
+        }   
     }
+    console.log("Tile tracker: ", letterTileTracker);
 
-    if (bool === true) {
-        lastID = letterTileTracker[letterTileTracker.length-1];
+    const redSquares = document.querySelectorAll('.specialSquareRed');
 
-        const id = document.getElementById(lastID).parentNode;
-        xCoord = id.dataset.x;
-        yCoord = id.dataset.y;
-    } 
-}
-
-export function boardTileHandler() {
-    const boardSquares = document.querySelectorAll('div.boardSquareGrey, div.specialSquareRed, div.specialSquareCyan, div.specialSquareBlue, div.specialSquarePink, div.starSquarePink');
-    for (const boardSquare of boardSquares) {
-        boardSquare.addEventListener('dragover', dragOverHandler);
-        boardSquare.addEventListener('drop', dropHandler);
+    for (const redSquare of redSquares) {
+        // console.log(redSquare);
+        if (!redSquare.hasChildNodes()) {
+            redSquare.textContent = "3WS";
+        }
     }
 }
 
@@ -61,14 +79,17 @@ export function tileRackHandler() {
     }
 } 
 
-export function dragStart() {
-    const letterTiles = document.querySelectorAll('.letterTile');
-    for (const letterTile of letterTiles) {
-        letterTile.addEventListener('dragstart', dragStartHandler);
+function boardTileHandler() {
+    const boardSquares = document.querySelectorAll('div.boardSquareGrey, div.specialSquareRed, div.specialSquareCyan, div.specialSquareBlue, div.specialSquarePink, div.starSquarePink');
+    for (const boardSquare of boardSquares) {
+        boardSquare.addEventListener('dragover', dragOverHandler);
+        boardSquare.addEventListener('dragenter', dragEnter);
+        boardSquare.addEventListener('dragleave', dragLeave);
+        boardSquare.addEventListener('drop', dropHandler);
     }
 }
 
-export function handleSubmitClick(xCoord, yCoord) {
+function handleSubmitClick(xCoord, yCoord) {
     const submit = document.querySelector('.submit');
     submit.addEventListener('click', wordsRecognition);
 }

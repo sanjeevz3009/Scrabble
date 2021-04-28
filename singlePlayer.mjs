@@ -1,18 +1,33 @@
+import { checkWordExists } from './fetch.mjs';
+import { letterTileTracker } from './dragHandler.mjs';
+
 export function randomLetters() {
-    const letterTiles = document.querySelectorAll('.letterTile');
-    
+    const letterCount = {
+        A: 9, B: 2, C: 2, D: 4, E: 12, F: 2, G: 3, H: 2, I: 9, J: 1, K: 1,
+        L: 4, M: 2, N: 6, O: 8, P: 2, Q: 1, R:6, S: 4, T: 6, U: 4, V: 2, W: 2,
+        X: 1, Y: 2, Z: 1 
+    };
+
     const alphabet = [
-        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", 
-        "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S",
+        "T", "U", "V", "W", "X", "Y", "Z"
     ];
 
-    let randomNumber = Math.floor(Math.random() * alphabet.length);
-    let randomLetter = alphabet[randomNumber];
+    let letters = [];
+
+    for (let i=0; i<alphabet.length; i++) {
+        const count = letterCount[alphabet[i]];
+        for (let x=0; x<count; x++) {
+            letters.push(alphabet[i]);
+        }
+    }
+    console.log(letters);
+    let randomNumber = Math.floor(Math.random() * letters.length);
+    let randomLetter = letters[randomNumber];
     return randomLetter;
 }
 
 function letterScores() {
-    // Can make it efficient
     const scores = {
         A: 1, E: 1, I: 1, O: 1, U: 1, L: 1, N: 1, S: 1, T: 1, R: 1,
         D: 2, G: 2,
@@ -25,25 +40,32 @@ function letterScores() {
 
     let letter = randomLetters();
     
-    for (let score in scores) {
-        let letterScore = scores[letter];
-        let letterAndScore = `${letter}${letterScore}`;
+    for (const score in scores) {
+        const letterScore = scores[letter];
+        const letterAndScore = `${letter}${letterScore}`;
         return letterAndScore;
-
     }
 }
+
 export function tileRackLetters() {
     const letterTiles = document.querySelectorAll('.letterTile');
 
     for (let i=0; i<letterTiles.length; i++) {
+        // const point = document.createElement('span');
+        // point.className = "point";
+        // point.textContent = "Test";
+        // letterTiles[i].appendChild(point);
+        // console.log(letterTiles[i]);
         letterTiles[i].textContent = letterScores();
     }
 }
 
-function clearP() {
-    let p = document.querySelector('.warning');
+function clearInfoBoard() {
+    const p = document.querySelector('.warning');
     p.parentNode.removeChild(p);
 }
+
+let oldWords = [];
 
 export function wordsRecognition() {
     const starSquarePink = document.querySelector('.starSquarePink');
@@ -54,92 +76,199 @@ export function wordsRecognition() {
         p.className = 'warning';
         p.textContent = "First letter tile must be placed in the middle square.";
         infoBoard.append(p);
-        window.setTimeout(clearP, 4000);
+        window.setTimeout(clearInfoBoard, 4000);
     }
 
     const boardSquares = document.querySelectorAll('div.boardSquareGrey, div.specialSquareRed, div.specialSquareCyan, div.specialSquareBlue, div.specialSquarePink, div.starSquarePink');
-    
+    console.log(boardSquares);
     let counter = 0;
-    let results = [];
-    let tempLetterArr = [];
+    let boardLetters = [];
+    let tempLetters = [];
+
 
     for (let i=0; i<boardSquares.length; i++) {
         if (counter === 14) {
-            tempLetterArr.push(boardSquares[i].textContent);
-            results.push(tempLetterArr);
-            tempLetterArr = [];
+            tempLetters.push(boardSquares[i].textContent);
+            boardLetters.push(tempLetters);
+            tempLetters = [];
             counter = 0;
         } else {
-            tempLetterArr.push(boardSquares[i].textContent);
+            tempLetters.push(boardSquares[i].textContent);
             counter += 1;
         }
     }
 
-    let wordsArr = [];
-    let tempWordArr = [];
-
-    for (let i=0; i<results.length; i++) {
-        tempWordArr = [];
-        for (let x=0; x<results[i].length; x++) {
-            if (results[i][x] != "") {
-                tempWordArr.push(results[i][x]);
-            } else {
-                wordsArr.push(tempWordArr.join(''));
-                tempWordArr = [];
+    for (let i=0; i<boardLetters.length; i++) {
+        for (let x=0; x<boardLetters[i].length; x++) {
+            switch(boardLetters[i][x]) {
+                case "3WS":
+                case "2WS":
+                case "2LS":
+                case "3LS":
+                    boardLetters[i].splice(x, 1, "");
+                    break;       
             }
         }
-        wordsArr.push(tempWordArr.join(''));
     }
 
-    let newWordsArr = [];
-    for (let i=0; i<wordsArr.length; i++) {
-        if (wordsArr[i].length > 1) {
-            newWordsArr.push(wordsArr[i]);
-        }
-    }
-    console.log(newWordsArr);
-
-    let wordsArrVer = [];
-    let tempWordArrVer = [];
-
-    for (let i=0; i<results.length; i++) {
-        tempWordArrVer = [];
-        for (let x=0; x<results.length; x++) {
-            if (results[x][i] != "") {
-                tempWordArrVer.push(results[x][i]);
-            } else {
-                wordsArrVer.push(tempWordArrVer.join(''));
-                tempWordArrVer = [];
+    for (let i=0; i<boardLetters.length; i++) {
+        for (let x=0; x<boardLetters[i].length; x++) {
+            const oldLetter = boardLetters[i][x];
+            if (oldLetter.length > 1) {
+                boardLetters[i].splice(x, 1, oldLetter[0]);
             }
         }
-        wordsArrVer.push(tempWordArrVer.join(''));
     }
-    wordsArrVer = wordsArrVer.filter(item => item);
+    
+    let tempWords = [];
+    let tempWordsHorz = [];
 
-    let newWordsArrVer = [];
+    for (let i=0; i<boardLetters.length; i++) {
+        tempWordsHorz = [];
+        for (let x=0; x<boardLetters[i].length; x++) {
+            if (boardLetters[i][x] != "") {
+                tempWordsHorz.push(boardLetters[i][x]);
+            } else {
+                tempWords.push(tempWordsHorz.join(''));
+                tempWordsHorz = [];
+            }
+        }
+        tempWords.push(tempWordsHorz.join(''));
+    }
 
-    for (let i=0; i<wordsArrVer.length; i++) {
-        if (wordsArrVer[i].length > 1) {
-            newWordsArrVer.push(wordsArrVer[i]);
+    let tempWordsVer = [];
+
+    for (let i=0; i<boardLetters.length; i++) {
+        tempWordsVer = [];
+        for (let x=0; x<boardLetters.length; x++) {
+            if (boardLetters[x][i] != "") {
+                tempWordsVer.push(boardLetters[x][i]);
+            } else {
+                tempWords.push(tempWordsVer.join(''));
+                tempWordsVer = [];
+            }
+        }
+        tempWords.push(tempWordsVer.join(''));
+    }
+    tempWords = tempWords.filter(item => item);
+    
+    let words = [];
+    for (let i=0; i<tempWords.length; i++) {
+        if (tempWords[i].length > 1) {
+            words.push(tempWords[i]);
         }
     }
-    console.log(newWordsArrVer);
+    console.log(words);
+    console.log(oldWords);
+    console.log(boardLetters);
+    compareWords(words);
 }
 
-function compare() {
-    let diff = 0;
-    if (newWordsArr.length > oldWordsArr.length) {
-        newWordsArr.reverse()
-        diff = newWordsArr.length - oldWordsArr.length;
-        for (let i=0; i<diff; i++) {
-            console.log(newWordsArr[i]);
-        } 
+function checkLetterConnection(newWord, words) {
+    console.log(newWord, newWord.length);
+    console.log("Tile tracker", letterTileTracker);
+
+    if (newWord.length != letterTileTracker.length) {
+        for (let i=0; i<letterTileTracker.length; i++) {
+            const tileID = document.getElementById(letterTileTracker[i]);
+    
+            const div = tileID.parentElement;
+            const dataX = div.getAttribute('data-x');
+            const dataY = div.getAttribute('data-y');
+    
+            let left = parseInt(dataX)-1;
+            const nextDivLeft = document.querySelector(`[data-x="${left}"][data-y="${dataY}"]`);
+            left = parseInt(dataX)+1;
+    
+            let right = parseInt(dataX)+1;
+            const nextDivRight = document.querySelector(`[data-x="${right}"][data-y="${dataY}"]`);
+            right = parseInt(dataX)-1;
+    
+            let top = parseInt(dataY)-1;
+            const nextDivTop = document.querySelector(`[data-x="${dataX}"][data-y="${top}"]`);
+            top = parseInt(dataY)+1;
+    
+            let bottom = parseInt(dataY)+1;
+            const nextDivBottom = document.querySelector(`[data-x="${dataX}"][data-y="${bottom}"]`);
+            bottom = parseInt(dataY)-1;
+    
+            let nextDivLeftBool;
+            let nextDivRightBool;
+            let nextDivTopBool;
+            let nextDivBottomBool;
+    
+            if (nextDivLeft.firstChild) {
+                nextDivLeftBool = nextDivLeft.firstChild.draggable;
+    
+            } else if (nextDivRight.firstChild) {
+                nextDivRightBool = nextDivRight.firstChild.draggable;
+    
+            } else if (nextDivTop.firstChild) {
+                nextDivTopBool = nextDivTop.firstChild.draggable;
+    
+            }  else if (nextDivBottom.firstChild) {
+                nextDivBottomBool = nextDivBottom.firstChild.draggable;
+            }
+            // console.log(nextDivLeftBool, nextDivRightBool, nextDivTopBool, nextDivBottomBool)
+        }
     } else {
-        console.log("It will never get here!")
+        console.log("Not a valid play!");
+        for (const word of words) {
+            if (oldWords.includes(word)) {
+                const index = oldWords.indexOf(word)
+                oldWords.splice(index, 1);
+            }
+        }
     }
-} 
+}
+
+let firstRound = false;
+
+function compareWords(words) {
+    console.log("Compare function!");
+    const tempOldWords = [...words];
+
+    for (const oldWord of oldWords) {
+        if (words.includes(oldWord)) {
+            const index = words.indexOf(oldWord)
+            words.splice(index, 1);
+        }
+    }
+    oldWords = [...tempOldWords];
+
+    console.log("Words: ", words);
+    for (const newWord of words) {
+        console.log("New word: ", newWord);
+        if (firstRound === false) {
+            checkWordExists(newWord);
+            firstRound = true;
+        } else if (firstRound === true){
+            checkLetterConnection(newWord, words);
+        }
+    }
+}
+
+let points = 0;
+
+export function givePoints(word) {
+    const letterScores = {
+        A: 1, E: 1, I: 1, O: 1, U: 1, L: 1, N: 1, S: 1, T: 1, R: 1,
+        D: 2, G: 2,
+        B: 3, C: 3, M: 3, P: 3,
+        F: 4, H: 4, V: 4, W: 4, Y: 4,
+        K: 5,
+        J: 8, X: 8,
+        Q: 10, Z: 10
+    };
+
+    for (let i=0; i<word.length; i++) {
+        points += letterScores[word[i]];
+    }
+    
+    const score = document.getElementById('score');
+    score.textContent = `Score: ${points}`;
+}
 
 export function singlePlayer() {
-    randomLetters();
-    //tileRackLetters();
+    tileRackLetters();
 }

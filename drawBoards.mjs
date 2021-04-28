@@ -43,24 +43,28 @@ export function drawSquares() {
             square.className = 'specialSquareRed';
             square.dataset.x = xCoord;
             square.dataset.y = yCoord;
+            square.textContent = "3WS";
 
             scrabbleBoard.append(square);
         } else if (boardList[x] === '2ls') {
             square.className = 'specialSquareCyan';
             square.dataset.x = xCoord;
             square.dataset.y = yCoord;
+            square.textContent = "2LS";
 
             scrabbleBoard.append(square);
         } else if (boardList[x] === '3ls') {
             square.className = 'specialSquareBlue';
             square.dataset.x = xCoord;
             square.dataset.y = yCoord;
+            square.textContent = "3LS";
 
             scrabbleBoard.append(square);
         } else if (boardList[x] === '2ws') {
             square.className = 'specialSquarePink';
             square.dataset.x = xCoord;
             square.dataset.y = yCoord;
+            square.textContent = "2WS";
 
             scrabbleBoard.append(square);
         } else if (boardList[x] === '') {
@@ -93,5 +97,5 @@ export function tileRack() {
 
 export function drawBoards() {
     drawSquares();
-    //tileRack();
+    tileRack();
 }
