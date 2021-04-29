@@ -1,4 +1,5 @@
 "use strict";
+import { letterScores } from './singlePlayer.mjs';
 
 export function drawSquares() {
     const boardList = [
@@ -85,14 +86,37 @@ export function drawSquares() {
 
 export function tileRack() {
     const tileRack = document.querySelector('.tileRack');
+    const amountOfTiles = tileRack.childNodes.length-1;
+
+    if (amountOfTiles != 7) {
+        for (let x=0; x<7-amountOfTiles; x++) {
+            const letterAndScore = letterScores();
+
+            const letterTile = document.createElement('p');
+            letterTile.className = 'letterTile';
+            letterTile.id = `tile${Math.floor(Math.random() * 200)}`;
+            letterTile.draggable = true;
+
+            const point = document.createElement('span');
+            point.className = "point";
+            point.textContent = letterAndScore[1];
+
+            letterTile.textContent = letterAndScore[0];
+            letterTile.appendChild(point);
+
+            tileRack.append(letterTile)
+        }  
+    }
+
+    const letterAndScore = letterScores();
+
+//         const point = document.createElement('span');
+//         point.className = "point";
+//         point.textContent = letterAndScore[1];
+
+//         letterTiles[i].textContent = letterAndScore[0];
+//         letterTiles[i].appendChild(point);
     
-    for (let x=0; x<7; x++) {
-        const letterTile = document.createElement('p');
-        letterTile.className = 'letterTile';
-        letterTile.id = `tile${Math.floor(Math.random() * 200)}`;
-        letterTile.draggable = true;
-        tileRack.append(letterTile)
-    }  
 }
 
 export function drawBoards() {

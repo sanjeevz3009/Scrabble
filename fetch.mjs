@@ -1,5 +1,6 @@
-import { letterTileTracker, clearLetterTileTracker } from './dragHandler.mjs';
+import { letterTileTracker, clearLetterTileTracker, dragHandler } from './dragHandler.mjs';
 import { givePoints } from './singlePlayer.mjs';
+import { tileRack } from './drawBoards.mjs';
 
 export async function checkWordExists(word) {
     const url = 'https://dictionary-dot-sse-2020.nw.r.appspot.com/' + word;
@@ -10,6 +11,8 @@ export async function checkWordExists(word) {
             console.log(word, " is a valid word.");
             dragFalse();
             givePoints(word);
+            tileRack();
+            dragHandler();
             break;
         case 400:
             console.log(word, " is too short.");
@@ -23,8 +26,6 @@ export async function checkWordExists(word) {
 }
 
 function dragFalse() {
-    // console.log(letterTileTracker);
-    // console.log(letterTileTracker.length);
     for (const letterTile of letterTileTracker) {
         const p = document.getElementById(letterTile);
         p.draggable = false;

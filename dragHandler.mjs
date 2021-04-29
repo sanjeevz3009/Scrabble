@@ -32,8 +32,11 @@ export function clearLetterTileTracker() {
 }
 
 function dropHandler(e) {
+    console.log("E", e);
     const data = e.dataTransfer.getData('text/plain');
+    console.log("Data", data);
     const dragged = document.getElementById(data);
+    console.log("Dragged", dragged);
 
     const squareClassName = ["boardSquareGrey", "specialSquareRed", "specialSquareCyan", "specialSquareBlue", "specialSquarePink", "starSquarePink"];
     const bool = squareClassName.includes(e.currentTarget.className);
@@ -43,11 +46,9 @@ function dropHandler(e) {
     if (e.currentTarget.className === "tileRack") {
         dragged.style.margin = "2px 0.1em";
         e.currentTarget.append(dragged);
-        // console.log(dragged.id);
         if (letterTileTracker.includes(dragged.id)) {
             const indexPos = letterTileTracker.indexOf(dragged.id);
             letterTileTracker.splice(indexPos, 1);
-            // console.log(letterTileTracker);
         }
     } else {
         if (!e.currentTarget.children.length > 0) {
@@ -61,12 +62,19 @@ function dropHandler(e) {
     }
     console.log("Tile tracker: ", letterTileTracker);
 
-    const redSquares = document.querySelectorAll('.specialSquareRed');
+    const specialSquares = document.querySelectorAll('.specialSquareRed, .specialSquarePink, .specialSquareCyan, .specialSquareBlue');
 
-    for (const redSquare of redSquares) {
-        // console.log(redSquare);
-        if (!redSquare.hasChildNodes()) {
-            redSquare.textContent = "3WS";
+    for (const specialSquare of specialSquares) {
+        if (!specialSquare.hasChildNodes()) {
+            if (specialSquare.className === "specialSquareRed") {
+                specialSquare.textContent = "3WS";
+            } else if (specialSquare.className === "specialSquarePink") {
+                specialSquare.textContent = "2WS";
+            } else if (specialSquare.className === "specialSquareCyan") {
+                specialSquare.textContent = "2LS";
+            } else {
+                specialSquare.textContent = "3LS";
+            }
         }
     }
 }
