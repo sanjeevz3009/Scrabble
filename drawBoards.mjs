@@ -84,6 +84,13 @@ export function drawSquares() {
     } 
 }
 
+function animateLetterTile() {
+    const letterTiles = document.querySelectorAll('.letterTile');
+    letterTiles[0].addEventListener("animation", e => {
+        document.querySelector(".element").classList.toggle("flip-scale-down-diag-2")
+    })
+}
+
 export function tileRack() {
     const tileRack = document.querySelector('.tileRack');
     const amountOfTiles = tileRack.childNodes.length-1;
@@ -104,19 +111,10 @@ export function tileRack() {
             letterTile.textContent = letterAndScore[0];
             letterTile.appendChild(point);
 
-            tileRack.append(letterTile)
+            tileRack.append(letterTile);
+            animateLetterTile();
         }  
-    }
-
-    const letterAndScore = letterScores();
-
-//         const point = document.createElement('span');
-//         point.className = "point";
-//         point.textContent = letterAndScore[1];
-
-//         letterTiles[i].textContent = letterAndScore[0];
-//         letterTiles[i].appendChild(point);
-    
+    } 
 }
 
 export function drawBoards() {

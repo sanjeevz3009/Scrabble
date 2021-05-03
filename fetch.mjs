@@ -1,5 +1,5 @@
 import { letterTileTracker, clearLetterTileTracker, dragHandler } from './dragHandler.mjs';
-import { givePoints } from './singlePlayer.mjs';
+import { givePoints, removeLetters } from './singlePlayer.mjs';
 import { tileRack } from './drawBoards.mjs';
 
 export async function checkWordExists(word) {
@@ -9,10 +9,11 @@ export async function checkWordExists(word) {
     switch (response.status) {
         case 200:
             console.log(word, " is a valid word.");
-            dragFalse();
             givePoints(word);
+            dragFalse();
             tileRack();
             dragHandler();
+            removeLetters(word);
             break;
         case 400:
             console.log(word, " is too short.");

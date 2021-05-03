@@ -26,21 +26,16 @@ function dragLeave() {
 }
 
 export let letterTileTracker = [];
+export let specialTileTracker = [];
 
 export function clearLetterTileTracker() {
     letterTileTracker = [];
+    specialTileTracker = [];
 }
 
 function dropHandler(e) {
-    console.log("E", e);
     const data = e.dataTransfer.getData('text/plain');
-    console.log("Data", data);
     const dragged = document.getElementById(data);
-    console.log("Dragged", dragged);
-
-    const squareClassName = ["boardSquareGrey", "specialSquareRed", "specialSquareCyan", "specialSquareBlue", "specialSquarePink", "starSquarePink"];
-    const bool = squareClassName.includes(e.currentTarget.className);
-
     const letterTileID = dragged.id;
 
     if (e.currentTarget.className === "tileRack") {
@@ -49,18 +44,21 @@ function dropHandler(e) {
         if (letterTileTracker.includes(dragged.id)) {
             const indexPos = letterTileTracker.indexOf(dragged.id);
             letterTileTracker.splice(indexPos, 1);
+            specialTileTracker.splice(indexPos, 1);
         }
     } else {
         if (!e.currentTarget.children.length > 0) {
             dragged.style.margin = 0;
             e.currentTarget.textContent = "";
             e.currentTarget.append(dragged);
+            specialTileTracker.push(document.getElementById(dragged.id).parentElement.className);
             letterTileTracker.push(letterTileID);
             const uniqueSet = new Set(letterTileTracker);
             letterTileTracker = [...uniqueSet];
         }   
     }
     console.log("Tile tracker: ", letterTileTracker);
+    console.log("Tile tracker: ", specialTileTracker);
 
     const specialSquares = document.querySelectorAll('.specialSquareRed, .specialSquarePink, .specialSquareCyan, .specialSquareBlue');
 

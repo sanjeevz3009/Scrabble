@@ -1,13 +1,20 @@
 import { checkWordExists } from './fetch.mjs';
 import { letterTileTracker } from './dragHandler.mjs';
+import { specialTileTracker } from './dragHandler.mjs';
+
+let letterCount = {
+    A: 9, B: 2, C: 2, D: 4, E: 12, F: 2, G: 3, H: 2, I: 9, J: 1, K: 1,
+    L: 4, M: 2, N: 6, O: 8, P: 2, Q: 1, R:6, S: 4, T: 6, U: 4, V: 2, W: 2,
+    X: 1, Y: 2, Z: 1 
+};
+
+export function removeLetters(word) {
+    for (const letter of word) {
+        letterCount[letter] = letterCount[letter]-1;
+    }
+}
 
 export function randomLetters() {
-    const letterCount = {
-        A: 9, B: 2, C: 2, D: 4, E: 12, F: 2, G: 3, H: 2, I: 9, J: 1, K: 1,
-        L: 4, M: 2, N: 6, O: 8, P: 2, Q: 1, R:6, S: 4, T: 6, U: 4, V: 2, W: 2,
-        X: 1, Y: 2, Z: 1 
-    };
-
     const alphabet = [
         "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S",
         "T", "U", "V", "W", "X", "Y", "Z"
@@ -47,21 +54,6 @@ export function letterScores() {
         return letterAndScore;
     }
 }
-
-// export function tileRackLetters() {
-//     const letterTiles = document.querySelectorAll('.letterTile');
-    
-//     for (let i=0; i<letterTiles.length; i++) {
-//         const letterAndScore = letterScores();
-
-//         const point = document.createElement('span');
-//         point.className = "point";
-//         point.textContent = letterAndScore[1];
-
-//         letterTiles[i].textContent = letterAndScore[0];
-//         letterTiles[i].appendChild(point);
-//     }
-// }
 
 function clearInfoBoard() {
     const p = document.querySelector('.warning');
@@ -164,9 +156,6 @@ export function wordsRecognition() {
 }
 
 function checkLetterConnection(newWord, words) {
-    console.log(newWord, newWord.length);
-    console.log("Tile tracker", letterTileTracker);
-
     if (newWord.length != letterTileTracker.length) {
         for (let i=0; i<letterTileTracker.length; i++) {
             const tileID = document.getElementById(letterTileTracker[i]);
@@ -232,8 +221,10 @@ function compareWords(words) {
     for (const newWord of words) {
         console.log("New word: ", newWord);
         if (firstRound === false) {
-            checkWordExists(newWord);
-            firstRound = true;
+            checkWordExists(newWord)
+            if (points > 0) {
+                firstRound = true;
+            }
         } else {
             checkLetterConnection(newWord, words);
         }
@@ -253,9 +244,27 @@ export function givePoints(word) {
         Q: 10, Z: 10
     };
 
+    let tempPoints = 0;
     for (let i=0; i<word.length; i++) {
-        points += letterScores[word[i]];
+        tempPoints += letterScores[word[i]];
     }
+
+    for (const specialTile of specialTileTracker) {
+        if (specialTile === "starSquarePink") {
+            tempPoints *= 2;
+        } else if (specialTile === "specialSquareRed") {
+            tempPoints *= 3;
+        } else if (specialTile === "specialSquareCyan") {
+            tempPoints *= 2;
+        } else if (specialTile === "specialSquareBlue") {
+            tempPoints *= 3;
+        } else if (specialTile === "specialSquarePink") {
+            tempPoints *= 2;
+        } else {
+            tempPoints += 0;
+        }
+    }
+    points += tempPoints;
     
     const score = document.getElementById('score');
     score.textContent = `Score: ${points}`;
@@ -267,11 +276,10 @@ export function singlePlayer() {
     // tileRackLetters();
 }
 
-// Generate letter tiles
-// Spit errors
 // End the game
 // Express server
-// At least database or multiplayer
+// Spit errors
+// At least database and or multiplayer
 // Improve UX/ UI
 // Resize script
 // Add sound maybe
