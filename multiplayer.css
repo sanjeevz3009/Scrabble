@@ -1,0 +1,20 @@
+@import "style.css";
+
+.tileRack {
+    margin: 5px 30px 0px 330px;  
+}
+.tileRack2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-width: 380px;
+    height: 60px;
+    border-radius: 1em;
+    margin: 5px 0px 0px 0px;
+    border: red solid;
+    background-color: white;
+}
+
+.submit {
+    margin: 5px 10px;
+}

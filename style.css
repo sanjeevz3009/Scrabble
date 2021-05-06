@@ -32,15 +32,15 @@ ul {
     padding: 0;
     overflow: hidden;
     /* background-color: #b3a812; */
-    top: 0;
+    /* top: 0; */
     /* width: 100%; */
 }
 
-li {
+/* li { */
     /* display: flex; */
-    float: right;
+    /* float:none; */
     /* border-right: 5px solid whitesmoke; */
-}
+/* } */
 
 li a {
     display: flex;
@@ -57,6 +57,30 @@ li a {
 li a:hover {
     color: white;
     background-color: yellowgreen;
+}
+
+ul li ul {
+    background-color: #333333;
+    visibility: hidden;
+    opacity: 0;
+    min-width: 14.4em;
+    position: absolute;
+    transition: all 0.5s ease;
+    /* margin-top: 1rem; */
+    /* left: 0; */
+    display: none;
+}
+  
+ul li:hover > ul,
+ul li ul:hover {
+    visibility: visible;
+    opacity: 1;
+    display: block;
+}
+  
+ul li ul li {
+    clear: both;
+    width: 100%;
 }
 
 .scrabbleBoard {
@@ -154,7 +178,7 @@ li a:hover {
 .infoBoard {
     justify-content: center;
     min-width: 400px;
-    height: 200px;
+    height: 250x;
     border-radius: 1em;
     overflow: hidden;
     border: greenyellow solid;

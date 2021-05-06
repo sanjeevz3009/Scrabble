@@ -1,7 +1,7 @@
 import { drawBoards } from './drawBoards.mjs';
 import { dragHandler } from './dragHandler.mjs';
-import { singlePlayer } from './singlePlayer.mjs'; 
+import { pickDesign } from './boardDesigns.mjs';
 
+pickDesign(0);
 drawBoards();
 dragHandler();
-singlePlayer();

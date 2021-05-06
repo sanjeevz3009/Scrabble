@@ -1,25 +1,7 @@
 "use strict";
-import { letterScores } from './singlePlayer.mjs';
+import { letterScores } from './game.mjs';
 
-export function drawSquares() {
-    const boardList = [
-        "3ws", "", "", "2ls", "", "", "", "3ws", "", "", "", "2ls", "", "", "3ws",
-        "", "2ws", "", "", "", "3ls", "", "", "", "3ls", "", "", "", "2ws", "",
-        "", "", "2ws", "", "", "", "2ls", "", "2ls", "", "", "", "2ws", "", "",
-        "2ls", "", "", "2ws", "", "", "", "2ls", "", "", "", "2ws", "", "", "2ls",
-        "", "", "", "", "2ws", "", "", "", "", "", "2ws", "", "", "", "",
-        "", "3ls", "", "", "", "3ls", "", "", "", "3ls", "", "", "", "3ls", "",
-        "", "", "2ls", "", "", "", "2ls", "", "2ls", "", "", "", "2ls", "", "",
-        "3ws", "", "", "2ls", "", "", "", "star", "", "", "", "2ls", "", "", "3ws",
-        "", "", "2ls", "", "", "", "2ls", "", "2ls", "", "", "", "2ls", "", "",
-        "", "3ls", "", "", "", "3ls", "", "", "", "3ls", "", "", "", "3ls", "",
-        "", "", "", "", "2ws", "", "", "", "", "", "2ws", "", "", "", "",
-        "2ls", "", "", "2ws", "", "", "", "2ls", "", "", "", "2ws", "", "", "2ls",
-        "", "", "2ws", "", "", "", "2ls", "", "2ls", "", "", "", "2ws", "", "",
-        "", "2ws", "", "", "", "3ls", "", "", "", "3ls", "", "", "", "2ws", "",
-        "3ws", "", "", "2ls", "", "", "", "3ws", "", "", "", "2ls", "", "", "3ws",
-    ];
-
+export function drawSquares(boardList) {
     const scrabbleBoard = document.querySelector('.scrabbleBoard');
     let tracker = 0;
 
@@ -84,15 +66,8 @@ export function drawSquares() {
     } 
 }
 
-function animateLetterTile() {
-    const letterTiles = document.querySelectorAll('.letterTile');
-    letterTiles[0].addEventListener("animation", e => {
-        document.querySelector(".element").classList.toggle("flip-scale-down-diag-2")
-    })
-}
-
-export function tileRack() {
-    const tileRack = document.querySelector('.tileRack');
+export function tileRack(tileRackName) {
+    const tileRack = document.querySelector(tileRackName);
     const amountOfTiles = tileRack.childNodes.length-1;
 
     if (amountOfTiles != 7) {
@@ -101,7 +76,7 @@ export function tileRack() {
 
             const letterTile = document.createElement('p');
             letterTile.className = 'letterTile';
-            letterTile.id = `tile${Math.floor(Math.random() * 200)}`;
+            letterTile.id = `tile${Math.floor(Math.random() * 1000)}`;
             letterTile.draggable = true;
 
             const point = document.createElement('span');
@@ -112,12 +87,10 @@ export function tileRack() {
             letterTile.appendChild(point);
 
             tileRack.append(letterTile);
-            animateLetterTile();
         }  
     } 
 }
 
 export function drawBoards() {
-    drawSquares();
-    tileRack();
+    tileRack('.tileRack');
 }

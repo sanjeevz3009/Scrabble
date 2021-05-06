@@ -1,4 +1,6 @@
-import { wordsRecognition } from './singlePlayer.mjs';
+"use strict";
+import { wordsRecognition } from './game.mjs';
+import { pickDesign } from './boardDesigns.mjs';
 
 function dragStart() {
     const letterTiles = document.querySelectorAll('.letterTile');
@@ -34,11 +36,12 @@ export function clearLetterTileTracker() {
 }
 
 function dropHandler(e) {
+    specialTileTracker = [];
     const data = e.dataTransfer.getData('text/plain');
     const dragged = document.getElementById(data);
     const letterTileID = dragged.id;
 
-    if (e.currentTarget.className === "tileRack") {
+    if (e.currentTarget.className === "tileRack" || e.currentTarget.className === "tileRack2") {
         dragged.style.margin = "2px 0.1em";
         e.currentTarget.append(dragged);
         if (letterTileTracker.includes(dragged.id)) {
@@ -51,12 +54,16 @@ function dropHandler(e) {
             dragged.style.margin = 0;
             e.currentTarget.textContent = "";
             e.currentTarget.append(dragged);
-            specialTileTracker.push(document.getElementById(dragged.id).parentElement.className);
             letterTileTracker.push(letterTileID);
             const uniqueSet = new Set(letterTileTracker);
             letterTileTracker = [...uniqueSet];
         }   
     }
+
+    for (const letterTile of letterTileTracker) {
+        specialTileTracker.push(document.getElementById(letterTile).parentElement.className);
+    }
+
     console.log("Tile tracker: ", letterTileTracker);
     console.log("Tile tracker: ", specialTileTracker);
 
@@ -78,7 +85,7 @@ function dropHandler(e) {
 }
 
 export function tileRackHandler() {
-    const letterTiles = document.querySelectorAll('.tileRack');
+    const letterTiles = document.querySelectorAll('.tileRack, .tileRack2');
     for (const letterTile of letterTiles) {
         letterTile.addEventListener('dragover', dragOverHandler);
         letterTile.addEventListener('drop', dropHandler);
@@ -95,14 +102,25 @@ function boardTileHandler() {
     }
 }
 
-function handleSubmitClick(xCoord, yCoord) {
+function handleSubmitClick() {
     const submit = document.querySelector('.submit');
     submit.addEventListener('click', wordsRecognition);
 }
 
+function getDropDownID(e) {
+    pickDesign(e.target.id);
+}
+
+function boardDesignsHandler() {
+    const dropDown = document.querySelectorAll('.dropdown');
+    for (const design of dropDown) {
+        design.addEventListener("click", getDropDownID);
+    }
+}
 export function dragHandler() {
     boardTileHandler();
     tileRackHandler();
     dragStart();
     handleSubmitClick();
+    boardDesignsHandler();    
 }

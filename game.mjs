@@ -1,3 +1,4 @@
+"use strict";
 import { checkWordExists } from './fetch.mjs';
 import { letterTileTracker } from './dragHandler.mjs';
 import { specialTileTracker } from './dragHandler.mjs';
@@ -156,50 +157,52 @@ export function wordsRecognition() {
 }
 
 function checkLetterConnection(newWord, words) {
-    if (newWord.length != letterTileTracker.length) {
-        for (let i=0; i<letterTileTracker.length; i++) {
-            const tileID = document.getElementById(letterTileTracker[i]);
-    
-            const div = tileID.parentElement;
-            const dataX = div.getAttribute('data-x');
-            const dataY = div.getAttribute('data-y');
-    
-            let left = parseInt(dataX)-1;
-            const nextDivLeft = document.querySelector(`[data-x="${left}"][data-y="${dataY}"]`);
-            left = parseInt(dataX)+1;
-    
-            let right = parseInt(dataX)+1;
-            const nextDivRight = document.querySelector(`[data-x="${right}"][data-y="${dataY}"]`);
-            right = parseInt(dataX)-1;
-    
-            let top = parseInt(dataY)-1;
-            const nextDivTop = document.querySelector(`[data-x="${dataX}"][data-y="${top}"]`);
-            top = parseInt(dataY)+1;
-    
-            let bottom = parseInt(dataY)+1;
-            const nextDivBottom = document.querySelector(`[data-x="${dataX}"][data-y="${bottom}"]`);
-            bottom = parseInt(dataY)-1;
-    
-            if (nextDivLeft.firstChild) {
-                checkWordExists(newWord);
-    
-            } else if (nextDivRight.firstChild) {
-                checkWordExists(newWord);
-    
-            } else if (nextDivTop.firstChild) {
-                checkWordExists(newWord);
-    
-            }  else {
-                checkWordExists(newWord);
-            }
-        }
+    for (let i=0; i<letterTileTracker.length; i++) {
+        const tileID = document.getElementById(letterTileTracker[i]);
 
-    } else {
-        console.log("Not a valid play!");
-        for (const word of words) {
-            if (oldWords.includes(word)) {
-                const index = oldWords.indexOf(word)
-                oldWords.splice(index, 1);
+        const div = tileID.parentElement;
+        const dataX = div.getAttribute('data-x');
+        const dataY = div.getAttribute('data-y');
+
+        let left = parseInt(dataX)-1;
+        const nextDivLeft = document.querySelector(`[data-x="${left}"][data-y="${dataY}"]`);
+        left = parseInt(dataX)+1;
+
+        let right = parseInt(dataX)+1;
+        const nextDivRight = document.querySelector(`[data-x="${right}"][data-y="${dataY}"]`);
+        right = parseInt(dataX)-1;
+
+        let top = parseInt(dataY)-1;
+        const nextDivTop = document.querySelector(`[data-x="${dataX}"][data-y="${top}"]`);
+        top = parseInt(dataY)+1;
+
+        let bottom = parseInt(dataY)+1;
+        const nextDivBottom = document.querySelector(`[data-x="${dataX}"][data-y="${bottom}"]`);
+        bottom = parseInt(dataY)-1;
+
+        if (nextDivLeft !== null && nextDivLeft.firstChild !== null && nextDivLeft.firstChild.draggable === false) {
+            checkWordExists(newWord);
+            break;
+
+        } else if (nextDivRight !== null && nextDivRight.firstChild !== null && nextDivRight.firstChild.draggable === false) {
+            checkWordExists(newWord);
+            break;
+            
+        } else if (nextDivTop !== null && nextDivTop.firstChild !== null && nextDivTop.firstChild.draggable === false) {
+            checkWordExists(newWord);
+            break;
+
+        }  else if (nextDivBottom !== null && nextDivBottom.firstChild !== null && nextDivBottom.firstChild.draggable === false) {
+            checkWordExists(newWord);
+            break;
+
+        } else {
+            console.log("Not a valid play!");
+            for (const word of words) {
+                if (oldWords.includes(word)) {
+                    const index = oldWords.indexOf(word)
+                    oldWords.splice(index, 1);
+                }
             }
         }
     }
@@ -208,6 +211,8 @@ function checkLetterConnection(newWord, words) {
 let firstRound = false;
 
 function compareWords(words) {
+    const starSquarePink = document.querySelector('.starSquarePink');
+
     const tempOldWords = [...words];
 
     for (const oldWord of oldWords) {
@@ -220,11 +225,9 @@ function compareWords(words) {
 
     for (const newWord of words) {
         console.log("New word: ", newWord);
-        if (firstRound === false) {
+        if (starSquarePink.hasChildNodes()) {
             checkWordExists(newWord)
-            if (points > 0) {
-                firstRound = true;
-            }
+            firstRound = true;
         } else {
             checkLetterConnection(newWord, words);
         }
@@ -232,6 +235,7 @@ function compareWords(words) {
 }
 
 let points = 0;
+let points2 = 0;
 
 export function givePoints(word) {
     const letterScores = {
@@ -246,17 +250,34 @@ export function givePoints(word) {
 
     let tempPoints = 0;
     for (let i=0; i<word.length; i++) {
-        tempPoints += letterScores[word[i]];
+        if (specialTileTracker[i] === "specialSquareCyan") {
+            tempPoints += letterScores[word[i]] * 2;
+            console.log("1", tempPoints);
+        } else if (specialTileTracker[i] === "specialSquareBlue") {
+            tempPoints += letterScores[word[i]] * 3;
+            console.log("2", tempPoints);
+        } else {
+            tempPoints += letterScores[word[i]];
+            console.log("3", tempPoints);
+        }
     }
+
+    console.log(tempPoints);
+
+    // for (const specialTile of specialTileTracker) {
+    //     if (specialTile === "specialSquareCyan") {
+    //         tempPoints *= 2;
+    //     } else if (specialTile === "specialSquareBlue") {
+    //         tempPoints *= 3;
+    //     } else {
+    //         tempPoints += 0;
+    //     }
+    // }
 
     for (const specialTile of specialTileTracker) {
         if (specialTile === "starSquarePink") {
             tempPoints *= 2;
         } else if (specialTile === "specialSquareRed") {
-            tempPoints *= 3;
-        } else if (specialTile === "specialSquareCyan") {
-            tempPoints *= 2;
-        } else if (specialTile === "specialSquareBlue") {
             tempPoints *= 3;
         } else if (specialTile === "specialSquarePink") {
             tempPoints *= 2;
@@ -267,19 +288,17 @@ export function givePoints(word) {
     points += tempPoints;
     
     const score = document.getElementById('score');
-    score.textContent = `Score: ${points}`;
+    score.textContent = `Player 1 Score: ${points}`;
     console.log("Points", points)
-
 }
 
-export function singlePlayer() {
-    // tileRackLetters();
-}
+// At least database and or multiplayer
+// Different board designs
 
 // End the game
 // Express server
 // Spit errors
-// At least database and or multiplayer
+
 // Improve UX/ UI
 // Resize script
 // Add sound maybe

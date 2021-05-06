@@ -1,5 +1,6 @@
+"use strict";
 import { letterTileTracker, clearLetterTileTracker, dragHandler } from './dragHandler.mjs';
-import { givePoints, removeLetters } from './singlePlayer.mjs';
+import { givePoints, removeLetters } from './game.mjs';
 import { tileRack } from './drawBoards.mjs';
 
 export async function checkWordExists(word) {
@@ -11,7 +12,7 @@ export async function checkWordExists(word) {
             console.log(word, " is a valid word.");
             givePoints(word);
             dragFalse();
-            tileRack();
+            tileRack(".tileRack");
             dragHandler();
             removeLetters(word);
             break;
