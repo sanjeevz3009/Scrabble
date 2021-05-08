@@ -1,7 +1,6 @@
 "use strict";
 import { letterTileTracker, clearLetterTileTracker, dragHandler } from './dragHandler.mjs';
 import { givePoints, removeLetters } from './game.mjs';
-import { tileRack } from './drawBoards.mjs';
 
 export async function checkWordExists(word) {
     const url = 'https://dictionary-dot-sse-2020.nw.r.appspot.com/' + word;
@@ -12,7 +11,6 @@ export async function checkWordExists(word) {
             console.log(word, " is a valid word.");
             givePoints(word);
             dragFalse();
-            tileRack(".tileRack");
             dragHandler();
             removeLetters(word);
             break;

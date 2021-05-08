@@ -85,7 +85,7 @@ function dropHandler(e) {
 }
 
 export function tileRackHandler() {
-    const letterTiles = document.querySelectorAll('.tileRack, .tileRack2');
+    const letterTiles = document.querySelectorAll('.tileRack, .tileRack2, .tileRack3');
     for (const letterTile of letterTiles) {
         letterTile.addEventListener('dragover', dragOverHandler);
         letterTile.addEventListener('drop', dropHandler);
@@ -111,16 +111,18 @@ function getDropDownID(e) {
     pickDesign(e.target.id);
 }
 
+
 function boardDesignsHandler() {
     const dropDown = document.querySelectorAll('.dropdown');
     for (const design of dropDown) {
         design.addEventListener("click", getDropDownID);
     }
 }
+
 export function dragHandler() {
     boardTileHandler();
     tileRackHandler();
     dragStart();
     handleSubmitClick();
-    boardDesignsHandler();    
+    boardDesignsHandler();  
 }

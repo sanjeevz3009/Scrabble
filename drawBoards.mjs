@@ -68,7 +68,10 @@ export function drawSquares(boardList) {
 
 export function tileRack(tileRackName) {
     const tileRack = document.querySelector(tileRackName);
-    const amountOfTiles = tileRack.childNodes.length-1;
+    let  amountOfTiles;
+    if (tileRack != null) {
+        amountOfTiles = tileRack.childNodes.length;
+    }
 
     if (amountOfTiles != 7) {
         for (let x=0; x<7-amountOfTiles; x++) {

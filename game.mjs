@@ -2,7 +2,6 @@
 import { checkWordExists } from './fetch.mjs';
 import { letterTileTracker } from './dragHandler.mjs';
 import { specialTileTracker } from './dragHandler.mjs';
-
 let letterCount = {
     A: 9, B: 2, C: 2, D: 4, E: 12, F: 2, G: 3, H: 2, I: 9, J: 1, K: 1,
     L: 4, M: 2, N: 6, O: 8, P: 2, Q: 1, R:6, S: 4, T: 6, U: 4, V: 2, W: 2,
@@ -208,8 +207,6 @@ function checkLetterConnection(newWord, words) {
     }
 }
 
-let firstRound = false;
-
 function compareWords(words) {
     const starSquarePink = document.querySelector('.starSquarePink');
 
@@ -227,7 +224,6 @@ function compareWords(words) {
         console.log("New word: ", newWord);
         if (starSquarePink.hasChildNodes()) {
             checkWordExists(newWord)
-            firstRound = true;
         } else {
             checkLetterConnection(newWord, words);
         }
@@ -235,7 +231,6 @@ function compareWords(words) {
 }
 
 let points = 0;
-let points2 = 0;
 
 export function givePoints(word) {
     const letterScores = {
@@ -261,18 +256,7 @@ export function givePoints(word) {
             console.log("3", tempPoints);
         }
     }
-
     console.log(tempPoints);
-
-    // for (const specialTile of specialTileTracker) {
-    //     if (specialTile === "specialSquareCyan") {
-    //         tempPoints *= 2;
-    //     } else if (specialTile === "specialSquareBlue") {
-    //         tempPoints *= 3;
-    //     } else {
-    //         tempPoints += 0;
-    //     }
-    // }
 
     for (const specialTile of specialTileTracker) {
         if (specialTile === "starSquarePink") {
@@ -290,10 +274,8 @@ export function givePoints(word) {
     const score = document.getElementById('score');
     score.textContent = `Player 1 Score: ${points}`;
     console.log("Points", points)
-}
 
-// At least database and or multiplayer
-// Different board designs
+}
 
 // End the game
 // Express server
