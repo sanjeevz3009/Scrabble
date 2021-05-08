@@ -26,21 +26,12 @@ h1 {
 
 ul {
     display: flex;
-    /* flex-direction: column; */
     list-style: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    /* background-color: #b3a812; */
-    /* top: 0; */
-    /* width: 100%; */
+    
 }
-
-/* li { */
-    /* display: flex; */
-    /* float:none; */
-    /* border-right: 5px solid whitesmoke; */
-/* } */
 
 li a {
     display: flex;
@@ -66,23 +57,16 @@ ul li ul {
     min-width: 14.4em;
     position: absolute;
     transition: all 0.5s ease;
-    /* margin-top: 1rem; */
-    /* left: 0; */
     display: none;
 }
   
 ul li:hover > ul,
 ul li ul:hover {
     visibility: visible;
-    opacity: 1;
+    opacity: 80%;
     display: block;
 }
   
-ul li ul li {
-    clear: both;
-    width: 100%;
-}
-
 .scrabbleBoard {
     display: flex;
     flex-wrap: wrap;
@@ -193,7 +177,7 @@ ul li ul li {
 .warning {
     display: flex;
     justify-content: center;
-    /* border-radius: 1em; */
+    border-radius: 1em;
     /* border: black solid; */
     font-family: serif;
     font-size: 14px;
@@ -250,8 +234,6 @@ ul li ul li {
 }
 
 .submit {
-    /* line-height: 2.5; */
-    /* padding: 5px 50px; */
     height: 4em;
     width: 10em;
     font-size: 1em;
@@ -260,7 +242,7 @@ ul li ul li {
     font-size: 1em;
     font-style: italic;
     transition: background-color 0.3s ease;
-    /* text-shadow: 1px 1px 1px #000; */
+    text-shadow: 3px 3px 0px #000;
     border-radius: 1em;
     margin: 5px 205px;
 

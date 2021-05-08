@@ -27,9 +27,11 @@ function dragLeave() {
 
 }
 
+// To keep track of the letter tiles being played
 export let letterTileTracker = [];
 export let specialTileTracker = [];
 
+// To clear the letter tiles tracker once a word have been successfully played
 export function clearLetterTileTracker() {
     letterTileTracker = [];
     specialTileTracker = [];
@@ -41,7 +43,7 @@ function dropHandler(e) {
     const dragged = document.getElementById(data);
     const letterTileID = dragged.id;
 
-    if (e.currentTarget.className === "tileRack" || e.currentTarget.className === "tileRack2") {
+    if (e.currentTarget.className === "tileRack") {
         dragged.style.margin = "2px 0.1em";
         e.currentTarget.append(dragged);
         if (letterTileTracker.includes(dragged.id)) {
@@ -69,6 +71,8 @@ function dropHandler(e) {
 
     const specialSquares = document.querySelectorAll('.specialSquareRed, .specialSquarePink, .specialSquareCyan, .specialSquareBlue');
 
+    // For loop to put back the special tile text on the squares on the board if the 
+    // user decides to move the letter tile
     for (const specialSquare of specialSquares) {
         if (!specialSquare.hasChildNodes()) {
             if (specialSquare.className === "specialSquareRed") {
@@ -85,7 +89,7 @@ function dropHandler(e) {
 }
 
 export function tileRackHandler() {
-    const letterTiles = document.querySelectorAll('.tileRack, .tileRack2, .tileRack3');
+    const letterTiles = document.querySelectorAll('.tileRack');
     for (const letterTile of letterTiles) {
         letterTile.addEventListener('dragover', dragOverHandler);
         letterTile.addEventListener('drop', dropHandler);

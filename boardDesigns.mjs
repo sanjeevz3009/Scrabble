@@ -71,6 +71,7 @@ export const boardDesigns = [
     
 ];
 
+// Function to change the board design, when the user changes it
 export function pickDesign(dropDownID) {
     reset();
     tileRack('.tileRack');

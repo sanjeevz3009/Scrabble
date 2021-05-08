@@ -1,6 +1,8 @@
 "use strict";
 import { letterScores } from './game.mjs';
 
+// To make the scrabble board
+// This function takes a parameter (different board designs)
 export function drawSquares(boardList) {
     const scrabbleBoard = document.querySelector('.scrabbleBoard');
     let tracker = 0;
@@ -22,6 +24,7 @@ export function drawSquares(boardList) {
             xCoord = 0;
         }
 
+        // Each element is given x and y coordinates
         if (boardList[x] === '3ws') {
             square.className = 'specialSquareRed';
             square.dataset.x = xCoord;
@@ -66,8 +69,9 @@ export function drawSquares(boardList) {
     } 
 }
 
-export function tileRack(tileRackName) {
-    const tileRack = document.querySelector(tileRackName);
+// To make the letter tiles for the tile rack
+export function tileRack() {
+    const tileRack = document.querySelector('.tileRack');
     let  amountOfTiles;
     if (tileRack != null) {
         amountOfTiles = tileRack.childNodes.length;
@@ -95,5 +99,5 @@ export function tileRack(tileRackName) {
 }
 
 export function drawBoards() {
-    tileRack('.tileRack');
+    tileRack();
 }
