@@ -1,7 +1,7 @@
 "use strict";
 import { dragHandler } from './dragHandler.mjs';
-import { drawSquares } from './drawBoards.mjs';
-import { tileRack } from './drawBoards.mjs';
+import { drawSquares, tileRack } from './drawBoards.mjs';
+import { reset } from './game.mjs';
 
 export const boardDesigns = [
     ["3ws", "", "", "2ls", "", "", "", "3ws", "", "", "", "2ls", "", "", "3ws",
@@ -72,17 +72,7 @@ export const boardDesigns = [
 ];
 
 export function pickDesign(dropDownID) {
-
-    const squares = document.querySelector('.scrabbleBoard');
-    while (squares.firstChild) {
-        squares.removeChild(squares.firstChild);
-    }
-
-    const tiles = document.querySelector('.tileRack');
-    while (tiles.firstChild) {
-        tiles.removeChild(tiles.firstChild);
-    }
-
+    reset();
     tileRack('.tileRack');
     drawSquares(boardDesigns[dropDownID]);
     dragHandler();
