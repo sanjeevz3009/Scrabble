@@ -1,0 +1,23 @@
+{
+  "name": "scrabble",
+  "version": "1.0.0",
+  "description": "Nothing yet.",
+  "type": "module",
+  "main": "svr.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanjeevz3009/Scrabble.git"
+  },
+  "author": "up2002235",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sanjeevz3009/Scrabble/issues"
+  },
+  "homepage": "https://github.com/sanjeevz3009/Scrabble#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
