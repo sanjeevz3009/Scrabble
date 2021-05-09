@@ -2,22 +2,21 @@
 import { checkWordExists } from './fetch.mjs';
 import { letterTileTracker, specialTileTracker } from './dragHandler.mjs';
 
-// Global object containing how many letters should be in the letter bag for the game
 let letterTilesBag = {
     A: 9, B: 2, C: 2, D: 4, E: 12, F: 2, G: 3, H: 2, I: 9, J: 1, K: 1,
     L: 4, M: 2, N: 6, O: 8, P: 2, Q: 1, R:6, S: 4, T: 6, U: 4, V: 2, W: 2,
     X: 1, Y: 2, Z: 1 
 };
 
-// Once letter tiles have been played, it will be reduced from the letter tiles bag (object)
 export function removeLetterTiles(word) {
+    // Once letter tiles have been played, it will be reduced from the letter tiles bag (object)
     for (const letter of word) {
         letterTilesBag[letter] = letterTilesBag[letter]-1;
     }
 }
 
-// Picks random letters from the letter tiles bag to place on the tile rack
 export function randomLetters() {
+    // Picks random letters from the letter tiles bag to place on the tile rack
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const letters = [];
 
@@ -30,14 +29,13 @@ export function randomLetters() {
         }
     }
 
-    // Randomly selecting the letters from the letters array and returning it
     const randomNumber = Math.floor(Math.random() * letters.length);
     const randomLetter = letters[randomNumber];
     return randomLetter;
 }
 
-// To display the score of the letter on the letter tiles
 export function letterScores() {
+    // To display the score of the letter on the letter tiles
     const scores = {
         A: 1, E: 1, I: 1, O: 1, U: 1, L: 1, N: 1, S: 1, T: 1, R: 1,
         D: 2, G: 2,
@@ -58,26 +56,41 @@ export function letterScores() {
     }
 }
 
-// Clears the warning message after being displayed on the information board
 function clearInfoBoard() {
+    // Clears the warning message after being displayed on the information board
     const p = document.querySelector('.warning');
     p.parentNode.removeChild(p);
 }
 
-// Word recognition 
-export function wordsRecognition() {
+function warningMessages() {
+    // To display a warning messages
     const starSquarePink = document.querySelector('.starSquarePink');
-
-    // To display a warning message if the first letter tile isn't placed on the star sqaure
     const infoBoard = document.querySelector('.infoBoard')
     const p = document.createElement('p');
+    p.className = 'warning';
+
     if (!starSquarePink.hasChildNodes()) {
-        p.className = 'warning';
-        p.textContent = "First letter tile must be placed in the star square.";
+        p.textContent = "First letter tile must be placed on the star square.";
+        infoBoard.append(p);
+        window.setTimeout(clearInfoBoard, 4000);
+    } else if (letterTileTracker.length === 0) {
+        p.textContent = "No new letter tiles placed on the board.";
+        infoBoard.append(p);
+        window.setTimeout(clearInfoBoard, 4000);
+    } else if (letterTileTracker.length === 1){
+        p.textContent = "Single letter isn't a word.";
+        infoBoard.append(p);
+        window.setTimeout(clearInfoBoard, 4000);
+    } else if (lettersConnected === true) {
+        p.textContent = "Letters must connect with existing letters on the board.";
         infoBoard.append(p);
         window.setTimeout(clearInfoBoard, 4000);
     }
+}
 
+export function wordsRecognition() {
+    warningMessages();
+    // Word recognition 
     const boardSquares = document.querySelectorAll('div.boardSquareGrey, div.specialSquareRed, div.specialSquareCyan, div.specialSquareBlue, div.specialSquarePink, div.starSquarePink');
     // boardLetters will become a 2D array storing all the letters on thr scrabble board
     let boardLetters = [];
@@ -126,7 +139,6 @@ export function wordsRecognition() {
         }
     }
     
-    // tempWords array to store joined words
     let tempWords = [];
     // tempLettersToJoin array will have the letters that needs to be
     // joined to make it a word
@@ -162,11 +174,9 @@ export function wordsRecognition() {
         }
         tempWords.push(tempLettersToJoin.join(''));
     }
-    // tempWords array will contain empty strings which will be filtered here
     tempWords = tempWords.filter(item => item);
     
     let words = [];
-    // This for loop will filter out single letters and only push words (2 or more letters)
     for (let i=0; i<tempWords.length; i++) {
         if (tempWords[i].length > 1) {
             words.push(tempWords[i]);
@@ -177,12 +187,11 @@ export function wordsRecognition() {
 
 // To keep track of words that have been already played
 let oldWords = [];
-// To check if first round have been played
 let firstRound = false;
 
-// This function will compare the words array with the oldWords array to identify
-// the latest/ new words played
 function compareWords(words) {
+    // This function will compare the words array with the oldWords array to identify
+    // the latest/ new words played
     const starSquarePink = document.querySelector('.starSquarePink');
 
     const tempOldWords = [...words];
@@ -204,15 +213,16 @@ function compareWords(words) {
             checkWordExists(newWord)
             firstRound = true;
         } else {
-            // If first round have been already played, from now the letter connections will be checked
-            // From now any letter tiles to be played will need to connect to existing tiles
             checkLetterConnection(newWord, words);
         }
     }
 }
 
-// Function to check if the letter tiles being played are connected to already existing tiles on the board
+let lettersConnected = false;
+
 function checkLetterConnection(newWord, words) {
+    lettersConnected = false;
+    // Function to check if the letter tiles being played are connected to already existing tiles on the board
     for (let i=0; i<letterTileTracker.length; i++) {
         const tileID = document.getElementById(letterTileTracker[i]);
 
@@ -256,8 +266,7 @@ function checkLetterConnection(newWord, words) {
             break;
 
         } else {
-            // If the letter tiles are not connected the word played will be removed from the words array
-            console.log("Not a valid play!");
+            lettersConnected = true;
             for (const word of words) {
                 if (oldWords.includes(word)) {
                     const index = oldWords.indexOf(word)
@@ -266,12 +275,13 @@ function checkLetterConnection(newWord, words) {
             }
         }
     }
+    warningMessages();
 }
 
 let points = 0;
 
-// Function to calculate the points
 export function givePoints(word) {
+    // Function to calculate the points
     const letterScores = {
         A: 1, E: 1, I: 1, O: 1, U: 1, L: 1, N: 1, S: 1, T: 1, R: 1,
         D: 2, G: 2,
@@ -318,9 +328,9 @@ export function givePoints(word) {
 
 }
 
-// Function that will be used to reset the scrabble board, tile track, letter tile bag and score 
-// when the user changes the board designs to play on a new board 
 export function reset() {
+    // Function that will be used to reset the scrabble board, tile track, letter tile bag and score 
+    // when the user changes the board designs to play on a new board 
     const squares = document.querySelector('.scrabbleBoard');
     while (squares.firstChild) {
         squares.removeChild(squares.firstChild);

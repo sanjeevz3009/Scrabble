@@ -1,27 +1,63 @@
-html {
-    background: rgb(2,0,36);
-    background: linear-gradient(
-        90deg, rgba(2,0,36,1) 0%, 
-        rgba(9,80,135,1) 23%, 
-        rgba(0,212,255,1) 100%);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-h1 {
-    display: flex;
-    justify-content: center;
-    font-family: serif;
-    color: #d7def0;
-    background-color: #333333;
-    -webkit-user-select: none;  /* Chrome all / Safari all */
-    -moz-user-select: none;     /* Firefox all */
-    -ms-user-select: none;      /* IE 10+ */
-    user-select: none;
+html {
+    background: black;
+}
+
+.about {
+    overflow: hidden;
+    width: 800px;
+    height: 270px;
+    border-radius: 0.5em;
+    margin: 120px 0px 0px 560px;
+    background-color: white;
+    font-family: sans-serif;
+    font-style: normal;
+    -webkit-user-select: none;  
+    -moz-user-select: none;    
+    -ms-user-select: none;    
+    user-select: none;  
 }
 
 .navigationBar {
+    position: relative;
     display: flex;
+    height: 2em;
     justify-content: center;
+    margin: 0;
+    padding: 0;
     background-color: #333333;
+}
+
+.navTitle {
+    position: absolute;
+    left: 0;
+    font-family: sans-serif;
+    font-style: normal;
+    color: #ffffff;
+    margin: 3px 0px 0px 10px;
+    letter-spacing: 2px;
+    -webkit-user-select: none;  
+    -moz-user-select: none;     
+    -ms-user-select: none;      
+    user-select: none;
+    animation: titlePulse 5s ease-in-out;
+}
+
+@keyframes titlePulse {
+    25% {
+        color: white;
+    }
+    50% {
+        color: red;
+    }
+    25% {
+        color: greenyellow;
+    }
 }
 
 ul {
@@ -30,34 +66,32 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    
 }
 
 li a {
     display: flex;
     text-align: center;
-    padding: 20px 20px;
+    padding: 3px 20px 5px 14px;
     text-decoration: none;
-    font-family: serif;
-    font-size: 2rem;
-    font-style: italic;
+    font-family: sans-serif;
+    font-size: 1.3rem;
+    font-style: normal;
     transition: background-color 0.5s ease;
-    color: rgb(172, 255, 47);
+    color: rgb(194, 194, 194);
 }
 
 li a:hover {
-    color: white;
-    background-color: yellowgreen;
+    color: rgb(255, 255, 255);
 }
 
 ul li ul {
+    display: none;
     background-color: #333333;
     visibility: hidden;
     opacity: 0;
-    min-width: 14.4em;
+    min-width: 10em;
     position: absolute;
     transition: all 0.5s ease;
-    display: none;
 }
   
 ul li:hover > ul,
@@ -73,14 +107,15 @@ ul li ul:hover {
     overflow: hidden;
     width: 800px;
     height: 820px;
-    border-radius: 1em;
+    border-radius: 0.5em;
     margin: 5px auto;
-    border: red solid;
     background-color: white;
-    -webkit-user-select: none;  /* Chrome all / Safari all */
-    -moz-user-select: none;     /* Firefox all */
-    -ms-user-select: none;      /* IE 10+ */
+    -webkit-user-select: none;  
+    -moz-user-select: none;    
+    -ms-user-select: none;    
     user-select: none;  
+    box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
+                inset -2px -2px 3px rgba(0, 0, 0, .6);
 }
 
 .boardSquareGrey {
@@ -89,7 +124,7 @@ ul li ul:hover {
     justify-content: center;
     width: 50px;
     height: 50px;
-    border-radius: 1em;
+    border-radius: 0.5em;
     margin: 2px 0.1em;
     background-color: #d7def0;
 }
@@ -102,7 +137,7 @@ ul li ul:hover {
     font-weight: bold;
     width: 50px;
     height: 50px;
-    border-radius: 1em;
+    border-radius: 0.5em;
     margin: 2px 0.1em;
     background-color: rgba(255, 0, 0, 0.795);
 }
@@ -114,7 +149,7 @@ ul li ul:hover {
     font-weight: bold;
     width: 50px;
     height: 50px;
-    border-radius: 1em;
+    border-radius: 0.5em;
     margin: 2px 0.1em;
     background-color: cyan;
 }
@@ -127,7 +162,7 @@ ul li ul:hover {
     font-weight: bold;
     width: 50px;
     height: 50px;
-    border-radius: 1em;
+    border-radius: 0.5em;
     margin: 2px 0.1em; 
     background-color: blue;
 }
@@ -139,7 +174,7 @@ ul li ul:hover {
     font-weight: bold;
     width: 50px;
     height: 50px;
-    border-radius: 1em;
+    border-radius: 0.5em;
     margin: 2px 0.1em;
     background-color: lightpink;
 }
@@ -147,7 +182,7 @@ ul li ul:hover {
 .starSquarePink {
     width: 50px;
     height: 50px;
-    border-radius: 1em;
+    border-radius: 0.5em;
     margin: 2px 0.1em;
     background-color: lightpink;
     background-image: url('star.png');
@@ -160,39 +195,75 @@ ul li ul:hover {
 }
 
 .infoBoard {
-    justify-content: center;
-    min-width: 400px;
-    height: 250x;
-    border-radius: 1em;
     overflow: hidden;
-    border: greenyellow solid;
-    margin: 10px 10px 20px 10px;
+    width: 440px;
+    height: 270px;
+    border-radius: 0.5em;
+    margin: 10px 15px 0px 0px;
     background-color: white;
-    -webkit-user-select: none;  /* Chrome all / Safari all */
-    -moz-user-select: none;     /* Firefox all */
-    -ms-user-select: none;      /* IE 10+ */
+    -webkit-user-select: none;  
+    -moz-user-select: none;     
+    -ms-user-select: none;     
+    user-select: none; 
+    box-shadow: inset 2px 2px 3px yellowgreen,
+                inset -2px -2px 3px yellowgreen;
+}
+
+#score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2em;
+    width: 10em;
+    font-family: sans-serif;
+    font-size: 1em;
+    font-style: normal;
+    border-radius: 0.5em;
+    margin: 12px 10px 0px 0px;
+    color: black;
+    background-color: white;
+    overflow: hidden;
+    -webkit-user-select: none;  
+    -moz-user-select: none;     
+    -ms-user-select: none;      
     user-select: none;
+    box-shadow: inset 2px 2px 3px yellowgreen,
+                inset -2px -2px 3px yellowgreen;
+    animation: pulse2 5s ease-in-out;
+}
+
+@keyframes pulse2 {
+    10% {
+        color: black;
+    }
+    45% {
+        color: red;
+    }
+    45% {
+        color: greenyellow;
+    }
 }
 
 .warning {
     display: flex;
     justify-content: center;
-    border-radius: 1em;
-    /* border: black solid; */
-    font-family: serif;
-    font-size: 14px;
-    color: #ffffff;
-    background-color: #c90000;
-    animation: pulse 4s infinite;
+    font-family: sans-serif;
+    font-style: normal;
+    padding: 10px;
+    font-size: 1em;
+    color: red;
+    animation: pulse 5s infinite;
 }
 
 @keyframes pulse {
-    0% {
-        background-color: red;
-    }
-    25% {
-        background-color: yellowgreen;
+    10% {
         color: black;
+    }
+    45% {
+        color: red;
+    }
+    45% {
+        color: greenyellow;
     }
 }
 
@@ -206,13 +277,20 @@ ul li ul:hover {
     justify-content: center;
     width: 50px;
     height: 50px;
-    border-radius: 1em;
+    border-radius: 0.5em;
     margin: 2px 0.1em;
     background-color: #f0d97e; 
-    -webkit-user-select: none;  /* Chrome all / Safari all */
-    -moz-user-select: none;     /* Firefox all */
-    -ms-user-select: none;      /* IE 10+ */
+    -webkit-user-select: none; 
+    -moz-user-select: none;    
+    -ms-user-select: none;     
     user-select: none;   
+    box-shadow: inset 1px 1px 1px rgba(255, 255, 255, .6),
+                inset -1px -1px 2px rgba(0, 0, 0, .6);
+}
+
+.letterTile:hover {
+    background-color: rgb(123, 124, 123);
+    color: white;
 }
 
 .point {
@@ -222,38 +300,34 @@ ul li ul:hover {
 }
 
 .tileRack {
+    position:absolute;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    min-width: 380px;
+    width: 380px;
     height: 60px;
-    border-radius: 1em;
-    margin: 5px 50px 0px 330px;
+    border-radius: 0.5em;
+    margin: 0px 250px;
     border: greenyellow solid;
     background-color: white;
 }
 
 .submit {
-    height: 4em;
-    width: 10em;
+    position:absolute;
+    height: 3.8em;
+    width: 8em;
     font-size: 1em;
     text-align: center;
-    font-family: serif;
+    font-family: sans-serif;
     font-size: 1em;
-    font-style: italic;
+    font-style: normal;
     transition: background-color 0.3s ease;
-    text-shadow: 3px 3px 0px #000;
-    border-radius: 1em;
-    margin: 5px 205px;
+    border-radius: 0.5em;
+    margin: 1px 640px;
 
-    color: white;
-    border: greenyellow solid;
-    background-color: #333333;
+    color: black;
+    background-color: white;
     outline: none;
-    background-image: linear-gradient(to top left,
-                                      rgba(0, 0, 0, .2),
-                                      rgba(0, 0, 0, .2) 30%,
-                                      rgba(0, 0, 0, 0));
     box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
                 inset -2px -2px 3px rgba(0, 0, 0, .6);
 
@@ -261,6 +335,7 @@ ul li ul:hover {
 
 .submit:hover {
     background-color: rgb(123, 124, 123);
+    color: white;
     
 }
 
@@ -269,22 +344,14 @@ ul li ul:hover {
                 inset 2px 2px 3px rgba(0, 0, 0, .6);
 }
 
-#score {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 2em;
-    width: 10em;
-    font-family: serif;
-    font-size: 1em;
-    font-style: italic;
-    border-radius: 1em;
-    margin: 45px auto;
-    color: white;
-    border: greenyellow solid ;
-    background-color: #333333;
-    -webkit-user-select: none;  /* Chrome all / Safari all */
-    -moz-user-select: none;     /* Firefox all */
-    -ms-user-select: none;      /* IE 10+ */
-    user-select: none;
+/* @media screen and (min-width: 1080px) { 
 }
+
+@media screen and (max-width: 1536px) { 
+    .tileRack {
+        margin: 1px 45px;
+    }
+    .submit {
+        margin: 1px 440px;
+    }
+} */
