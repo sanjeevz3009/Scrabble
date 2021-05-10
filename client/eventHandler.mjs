@@ -1,6 +1,5 @@
 "use strict";
-// import { wordsRecognition } from './game.mjs';
-import { wordsRecognition } from './wordRecognition.mjs';
+import { wordsRecognition } from './game.mjs';
 import { pickDesign } from './boardDesigns.mjs';
 import { gameFinished } from './game.mjs';
 
