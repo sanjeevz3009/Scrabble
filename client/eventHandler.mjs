@@ -1,6 +1,7 @@
 "use strict";
 import { wordsRecognition } from './game.mjs';
 import { pickDesign } from './boardDesigns.mjs';
+import { gameFinished } from './game.mjs';
 
 function dragStart() {
     const letterTiles = document.querySelectorAll('.letterTile');
@@ -24,21 +25,20 @@ function dragEnter() {
 
 function dragLeave() {
     this.style.backgroundColor = "";
-
 }
 
 // To keep track of the letter tiles being played
-export let letterTileTracker = [];
-export let specialTileTracker = [];
+export let letterTilesTracker = [];
+export let specialTilesTracker = [];
 
 // To clear the letter tiles tracker once a word have been successfully played
-export function clearLetterTileTracker() {
-    letterTileTracker = [];
-    specialTileTracker = [];
+export function clearLetterTilesTracker() {
+    letterTilesTracker = [];
+    specialTilesTracker = [];
 }
 
 function dropHandler(e) {
-    specialTileTracker = [];
+    specialTilesTracker = [];
     const data = e.dataTransfer.getData('text/plain');
     const dragged = document.getElementById(data);
     const letterTileID = dragged.id;
@@ -46,28 +46,28 @@ function dropHandler(e) {
     if (e.currentTarget.className === "tileRack") {
         dragged.style.margin = "2px 0.1em";
         e.currentTarget.append(dragged);
-        if (letterTileTracker.includes(dragged.id)) {
-            const indexPos = letterTileTracker.indexOf(dragged.id);
-            letterTileTracker.splice(indexPos, 1);
-            specialTileTracker.splice(indexPos, 1);
+        if (letterTilesTracker.includes(dragged.id)) {
+            const indexPos = letterTilesTracker.indexOf(dragged.id);
+            letterTilesTracker.splice(indexPos, 1);
+            specialTilesTracker.splice(indexPos, 1);
         }
     } else {
         if (!e.currentTarget.children.length > 0) {
             dragged.style.margin = 0;
             e.currentTarget.textContent = "";
             e.currentTarget.append(dragged);
-            letterTileTracker.push(letterTileID);
-            const uniqueSet = new Set(letterTileTracker);
-            letterTileTracker = [...uniqueSet];
+            letterTilesTracker.push(letterTileID);
+            const uniqueSet = new Set(letterTilesTracker);
+            letterTilesTracker = [...uniqueSet];
         }   
     }
 
-    for (const letterTile of letterTileTracker) {
-        specialTileTracker.push(document.getElementById(letterTile).parentElement.className);
+    for (const letterTile of letterTilesTracker) {
+        specialTilesTracker.push(document.getElementById(letterTile).parentElement.className);
     }
 
-    console.log("Tile tracker: ", letterTileTracker);
-    console.log("Tile tracker: ", specialTileTracker);
+    console.log("Tile tracker: ", letterTilesTracker);
+    console.log("Special tile tracker: ", specialTilesTracker);
 
     const specialSquares = document.querySelectorAll('.specialSquareRed, .specialSquarePink, .specialSquareCyan, .specialSquareBlue');
 
@@ -111,10 +111,10 @@ function handleSubmitClick() {
     submit.addEventListener('click', wordsRecognition);
 }
 
-function getDropDownID(e) {
-    pickDesign(e.target.id);
+function handleFinish() {
+    const finish = document.querySelector('.finish')
+    finish.addEventListener('click', gameFinished);
 }
-
 
 function boardDesignsHandler() {
     const dropDown = document.querySelectorAll('.dropdown');
@@ -123,10 +123,15 @@ function boardDesignsHandler() {
     }
 }
 
+function getDropDownID(e) {
+    pickDesign(e.target.id);
+}
+
 export function dragHandler() {
     boardTileHandler();
     tileRackHandler();
     dragStart();
     handleSubmitClick();
     boardDesignsHandler();  
+    handleFinish();
 }

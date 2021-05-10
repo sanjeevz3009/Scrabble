@@ -5,8 +5,8 @@ import { letterScores } from './game.mjs';
 // This function takes a parameter (different board designs)
 export function drawSquares(boardList) {
     const scrabbleBoard = document.querySelector('.scrabbleBoard');
+    
     let tracker = 0;
-
     let xCoord = 0;
     let yCoord = 0;
     
@@ -24,7 +24,7 @@ export function drawSquares(boardList) {
             xCoord = 0;
         }
 
-        // Each element is given x and y coordinates
+        // Each element will be given x and y coordinates
         if (boardList[x] === '3ws') {
             square.className = 'specialSquareRed';
             square.dataset.x = xCoord;
@@ -72,11 +72,12 @@ export function drawSquares(boardList) {
 // To make the letter tiles for the tile rack
 export function tileRack() {
     const tileRack = document.querySelector('.tileRack');
-    let  amountOfTiles;
+    let amountOfTiles;
     if (tileRack != null) {
         amountOfTiles = tileRack.childNodes.length;
     }
-
+    // 7 letter tiles will be be present in the tile rack
+    // The letter tiles will also contain their score
     if (amountOfTiles != 7) {
         for (let x=0; x<7-amountOfTiles; x++) {
             const letterAndScore = letterScores();

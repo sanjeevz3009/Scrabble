@@ -1,25 +1,33 @@
 "use strict";
 import { checkWordExists } from './fetch.mjs';
-import { letterTileTracker, specialTileTracker } from './dragHandler.mjs';
+import { letterTilesTracker, specialTilesTracker, clearLetterTilesTracker, dragHandler } from './eventHandler.mjs';
+import { tileRack } from './drawBoards.mjs';
+import { pickDesign } from './boardDesigns.mjs';
 
 let letterTilesBag = {
     A: 9, B: 2, C: 2, D: 4, E: 12, F: 2, G: 3, H: 2, I: 9, J: 1, K: 1,
-    L: 4, M: 2, N: 6, O: 8, P: 2, Q: 1, R:6, S: 4, T: 6, U: 4, V: 2, W: 2,
+    L: 4, M: 2, N: 6, O: 8, P: 2, Q: 1, R: 6, S: 4, T: 6, U: 4, V: 2, W: 2,
     X: 1, Y: 2, Z: 1 
 };
 
-export function removeLetterTiles(word) {
+function removeLetterTiles(word) {
     // Once letter tiles have been played, it will be reduced from the letter tiles bag (object)
     for (const letter of word) {
         letterTilesBag[letter] = letterTilesBag[letter]-1;
     }
+
+    let amountOfLetters = 0;
+    for (let key in letterTilesBag) {
+        amountOfLetters += letterTilesBag[key];
+    }
+    const letterTileCount = document.getElementById("letterTileCount");
+    letterTileCount.textContent = `You have ${amountOfLetters} letter tiles in your bag.`
 }
 
-export function randomLetters() {
+function randomLetters() {
     // Picks random letters from the letter tiles bag to place on the tile rack
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const letters = [];
-
     // Puts all the letters available from the letter tile bag into letters array 
     // to be randomly picked later
     for (let i=0; i<alphabet.length; i++) {
@@ -28,7 +36,6 @@ export function randomLetters() {
             letters.push(alphabet[i]);
         }
     }
-
     const randomNumber = Math.floor(Math.random() * letters.length);
     const randomLetter = letters[randomNumber];
     return randomLetter;
@@ -47,44 +54,11 @@ export function letterScores() {
     };
 
     const letter = randomLetters();
-    
     for (const score in scores) {
         const letterAndScore = [];
         const letterScore = scores[letter];
         letterAndScore.push(letter, letterScore);
         return letterAndScore;
-    }
-}
-
-function clearInfoBoard() {
-    // Clears the warning message after being displayed on the information board
-    const p = document.querySelector('.warning');
-    p.parentNode.removeChild(p);
-}
-
-function warningMessages() {
-    // To display a warning messages
-    const starSquarePink = document.querySelector('.starSquarePink');
-    const infoBoard = document.querySelector('.infoBoard')
-    const p = document.createElement('p');
-    p.className = 'warning';
-
-    if (!starSquarePink.hasChildNodes()) {
-        p.textContent = "First letter tile must be placed on the star square.";
-        infoBoard.append(p);
-        window.setTimeout(clearInfoBoard, 4000);
-    } else if (letterTileTracker.length === 0) {
-        p.textContent = "No new letter tiles placed on the board.";
-        infoBoard.append(p);
-        window.setTimeout(clearInfoBoard, 4000);
-    } else if (letterTileTracker.length === 1){
-        p.textContent = "Single letter isn't a word.";
-        infoBoard.append(p);
-        window.setTimeout(clearInfoBoard, 4000);
-    } else if (lettersConnected === true) {
-        p.textContent = "Letters must connect with existing letters on the board.";
-        infoBoard.append(p);
-        window.setTimeout(clearInfoBoard, 4000);
     }
 }
 
@@ -111,7 +85,6 @@ export function wordsRecognition() {
             counter += 1;
         }
     }
-
     // Text of the special squares will be read and appended to the boardLetters array
     // This nested for loops remove that
     for (let i=0; i<boardLetters.length; i++) {
@@ -126,7 +99,6 @@ export function wordsRecognition() {
             }
         }
     }
-
     // When the text content is appended to the boardLetters 2D array, it will contain
     // the score of the letter from the letter tile and this nested for loop removes that
     // leaving only the letters
@@ -138,12 +110,10 @@ export function wordsRecognition() {
             }
         }
     }
-    
     let tempWords = [];
     // tempLettersToJoin array will have the letters that needs to be
     // joined to make it a word
     let tempLettersToJoin = [];
-
     // This nested for loop will iterate through the 2D array boardLetters joining any possible words
     // This nested for loop will iterate through the arrays from left to right to identify
     // any words that can be formed
@@ -159,7 +129,6 @@ export function wordsRecognition() {
         }
         tempWords.push(tempLettersToJoin.join(''));
     }
-
     // This nested for loop will iterate through the arrays top to bottom to identify any words that 
     // can be formed
     for (let i=0; i<boardLetters.length; i++) {
@@ -185,9 +154,14 @@ export function wordsRecognition() {
     compareWords(words);
 }
 
+export let firstRound = false;
+export function firstRoundPlayed() {
+    firstRound = true;
+}
+
 // To keep track of words that have been already played
 let oldWords = [];
-let firstRound = false;
+let wordsLength = 0;
 
 function compareWords(words) {
     // This function will compare the words array with the oldWords array to identify
@@ -205,13 +179,12 @@ function compareWords(words) {
         }
     }
     oldWords = [...tempOldWords];
-
     // To check if the first round is played or not
+    wordsLength = words.length;
     for (const newWord of words) {
         console.log("New word: ", newWord);
         if (firstRound === false && starSquarePink.hasChildNodes()) {
             checkWordExists(newWord)
-            firstRound = true;
         } else {
             checkLetterConnection(newWord, words);
         }
@@ -219,15 +192,13 @@ function compareWords(words) {
 }
 
 let lettersConnected = false;
-
 function checkLetterConnection(newWord, words) {
     lettersConnected = false;
     // Function to check if the letter tiles being played are connected to already existing tiles on the board
-    for (let i=0; i<letterTileTracker.length; i++) {
-        const tileID = document.getElementById(letterTileTracker[i]);
-
+    for (let i=0; i<letterTilesTracker.length; i++) {
+        const letterTile = document.getElementById(letterTilesTracker[i]);
         // Using the tileID we get the X and Y coordinates of the letter tiles on the board
-        const div = tileID.parentElement;
+        const div = letterTile.parentElement;
         const dataX = div.getAttribute('data-x');
         const dataY = div.getAttribute('data-y');
 
@@ -278,8 +249,23 @@ function checkLetterConnection(newWord, words) {
     warningMessages();
 }
 
-let points = 0;
+let validWords = [];
+export function checkAllWords(word) {
+    // Checks if all the formed words are valid before giving points
+    validWords.push(word);
+    console.log(validWords.length, wordsLength);
+    if (validWords.length === wordsLength) {
+        for (const word of validWords) {
+            givePoints(word);
+        }
+        wordsLength = 0;
+        validWords = [];
+    } else {
+        console.log("Rearrange your letter tiles, invalid words.")
+    }
+}
 
+let points = 0;
 export function givePoints(word) {
     // Function to calculate the points
     const letterScores = {
@@ -291,14 +277,13 @@ export function givePoints(word) {
         J: 8, X: 8,
         Q: 10, Z: 10
     };
-
     // Caculate the normal points of the tiles
     let tempPoints = 0;
     for (let i=0; i<word.length; i++) {
-        if (specialTileTracker[i] === "specialSquareCyan") {
+        if (specialTilesTracker[i] === "specialSquareCyan") {
             tempPoints += letterScores[word[i]] * 2;
             console.log("1", tempPoints);
-        } else if (specialTileTracker[i] === "specialSquareBlue") {
+        } else if (specialTilesTracker[i] === "specialSquareBlue") {
             tempPoints += letterScores[word[i]] * 3;
             console.log("2", tempPoints);
         } else {
@@ -307,9 +292,8 @@ export function givePoints(word) {
         }
     }
     console.log(tempPoints);
-
     // Calculate points if the letter tiles are placed on special board squares
-    for (const specialTile of specialTileTracker) {
+    for (const specialTile of specialTilesTracker) {
         if (specialTile === "starSquarePink") {
             tempPoints *= 2;
         } else if (specialTile === "specialSquareRed") {
@@ -326,11 +310,49 @@ export function givePoints(word) {
     score.textContent = `Player 1 Score: ${points}`;
     console.log("Points", points)
 
+    removeLetterTiles(word);
+    dragFalse();
+    tileRack();
+    dragHandler();
+    wordPlayed(word);
+}
+
+function clearInfoBoard() {
+    // Clears the warning message after being displayed on the information board
+    const p = document.querySelector('.warning');
+    p.parentNode.removeChild(p);
+}
+
+export function warningMessages(word, statusCode) {
+    // To display a warning messages
+    const starSquarePink = document.querySelector('.starSquarePink');
+    const infoBoard = document.querySelector('.infoBoard')
+    const p = document.createElement('p');
+    p.className = 'warning';
+
+    if (!starSquarePink.hasChildNodes()) {
+        p.textContent = "First letter tile must be placed on the star square.";
+        infoBoard.append(p);
+        window.setTimeout(clearInfoBoard, 4000);
+    } else if (statusCode === "404") {
+        p.textContent = `${word} is not a valid word.`;
+        infoBoard.append(p);
+        window.setTimeout(clearInfoBoard, 4000);
+    }
+}
+
+// Function to make the letter tiles played by the user not moveable after it has been confirmed a valid word
+export function dragFalse() {
+    for (const letterTile of letterTilesTracker) {
+        const p = document.getElementById(letterTile);
+        p.draggable = false;
+    }
+    clearLetterTilesTracker();
 }
 
 export function reset() {
-    // Function that will be used to reset the scrabble board, tile track, letter tile bag and score 
-    // when the user changes the board designs to play on a new board 
+    // Function that will be used to reset the scrabble board, tile track, letter tile bag and score,
+    // when the user changes the board designs to play on a new board or game is finished
     const squares = document.querySelector('.scrabbleBoard');
     while (squares.firstChild) {
         squares.removeChild(squares.firstChild);
@@ -352,11 +374,12 @@ export function reset() {
     };
 }
 
-// End the game
-// Express server
-// Spit errors
+function wordPlayed(word) {
+    const wordPlayed = document.getElementById('wordPlayed');
+    wordPlayed.textContent = `You played the word: ${word}`
+}
 
-// Improve UX/ UI
-// Resize script
-// Add sound maybe
-// Animations
+export function gameFinished() {
+    alert(`Your final score is ${points}. Thank you for playing.`);
+    pickDesign(0);
+}
