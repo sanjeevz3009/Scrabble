@@ -1,11 +1,11 @@
 # Scrabble
 
-#Usuage
+# Usuage
 * `npm install` to install the required modules and files.
 * `npm start` to run the web application.
 
 # about.html 
-* about.html contains structure of the about web page, which contains information about the gameplay.
+* about.html contains the structure of the about web page, which contains information about the gameplay.
 # index.html
 * index.html contains the main game/ web page structure for the scrabble game.
 # style.css
@@ -36,7 +36,3 @@
 * Online multiplayer.
 * More interactable web page, such as CSS animations or resizing for different screen resoultions.
 * Make it compaitable with more browswers, as of now it works great with Chrome but not too well Mozilla firefox.
-
-
-
-
