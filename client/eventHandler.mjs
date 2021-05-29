@@ -38,6 +38,7 @@ export function clearLetterTilesTracker() {
 }
 
 function dropHandler(e) {
+    e.preventDefault();
     specialTilesTracker = [];
     const data = e.dataTransfer.getData('text/plain');
     const dragged = document.getElementById(data);
