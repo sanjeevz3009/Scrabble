@@ -35,5 +35,4 @@
 * Add multiplayer games, as I will be be reusing most of the code.
 * Online multiplayer.
 * More interactable web page, such as CSS animations or resizing for different screen resoultions.
-* Make it compaitable with more browsers, as of now it works great with Chrome but not too well Mozilla firefox.
 * Add a database to create and save a account for a user (First name, surname, email, password, game scores and settings). 
